@@ -34,7 +34,18 @@ function mkPill(label, cls, style) {
 function mkPhead(chips, titulo, subtitulo) {
   var phead = mk('div', 'phead');
   var top = mk('div', 'phead-top');
-  chips.forEach(function(c) {
+
+  var burger = mk('button', 'burger-menu');
+  burger.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke-linecap="round"/></svg>';
+  burger.onclick = function () {
+    var sb = document.getElementById('sidebar');
+    var overlay = document.querySelector('.sb-overlay');
+    if (sb) sb.classList.add('open');
+    if (overlay) overlay.classList.add('open');
+  };
+  top.appendChild(burger);
+
+  chips.forEach(function (c) {
     top.appendChild(mkPill(c.label, c.cls || '', c.style || null));
   });
   phead.appendChild(top);

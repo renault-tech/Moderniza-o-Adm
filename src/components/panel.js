@@ -94,7 +94,7 @@ var MOD6_PCCV_FLOW = [
 function mkProBox(headTxt, headCls, itens, isDot) {
   var box = mk('div', 'pro-box');
   box.appendChild(mk('div', 'pro-box-head ' + headCls, headTxt));
-  itens.forEach(function(t) { box.appendChild(mkProItem(t, isDot)); });
+  itens.forEach(function (t) { box.appendChild(mkProItem(t, isDot)); });
   return box;
 }
 
@@ -117,7 +117,7 @@ function render0() {
     { l: 'Prejuízo FGTS', v: 'R$ 5,1 mi', d: 'Depósitos irregulares em 2024', cor: '#e8453c' },
     { l: 'Contratos vencidos', v: '171', d: 'Acima de 2 anos · R$ 11 mi', cor: '#bf8600' }
   ];
-  kpis.forEach(function(k) {
+  kpis.forEach(function (k) {
     var kpi = mk('div', 'kpi');
     kpi.appendChild(mk('div', 'kpi-l', k.l));
     var v = mk('div', 'kpi-v', k.v);
@@ -130,7 +130,7 @@ function render0() {
 
   /* Achados */
   var achGrid = mk('div', 'achg');
-  ACHADOS.forEach(function(a) {
+  ACHADOS.forEach(function (a) {
     var div = mk('div', 'ach');
     var num = mk('div', 'ach-n', a.num);
     num.style.background = a.gravidade === 'd' ? 'var(--color-background-danger)' : 'var(--color-background-warning)';
@@ -173,7 +173,7 @@ function render1() {
   body.appendChild(mkSec('A modernização é e não é', proscons));
 
   var pilGrid = mk('div', 'g3');
-  MOD1_PILARES.forEach(function(p) {
+  MOD1_PILARES.forEach(function (p) {
     pilGrid.appendChild(mkCard(p.titulo, p.descricao, p.cor, p.bg));
   });
   body.appendChild(mkSec('Os três pilares', pilGrid));
@@ -282,14 +282,60 @@ function render5() {
   body.appendChild(flowSec);
 
   var rendSec = mk('div');
-  rendSec.appendChild(mk('div', 'sec-label', 'Rendimento histórico: FGTS vs alternativas — simulação R$ 50.000 em 10 anos'));
+  rendSec.appendChild(mk('div', 'sec-label', 'Simulador interativo de Rendimento: FGTS vs alternativas'));
+
   var descCard = mk('div', 'card');
-  descCard.style.marginBottom = '10px';
-  descCard.appendChild(mk('div', 'card-d', 'O FGTS rende TR + 3% ao ano. Historicamente esse rendimento fica abaixo da inflação (IPCA) e muito abaixo do CDI. Ao sacar o saldo na migração e aplicar em renda fixa conservadora, o servidor obtém rendimento real significativamente superior.'));
+  descCard.style.marginBottom = '15px';
+  descCard.appendChild(mk('div', 'card-d', 'O FGTS rende TR + 3% ao ano. Ao sacar o saldo na migração e aplicar na poupança ou em renda fixa (CDI/Tesouro Selic), o rendimento projetado altera. Use os seletores abaixo para simular opções com o seu cenário no ato da migração:'));
   rendSec.appendChild(descCard);
+
+  var calcBox = mk('div', 'card');
+  calcBox.style.marginBottom = '20px';
+
+  var row1 = mk('div');
+  row1.style.marginBottom = '10px';
+  var lbl1 = mk('div', 'sec-label', 'Saldo do FGTS: R$ 50.000');
+  var input1 = mk('input');
+  input1.type = 'range';
+  input1.min = '10000';
+  input1.max = '200000';
+  input1.step = '5000';
+  input1.value = '50000';
+  input1.style.width = '100%';
+  row1.appendChild(lbl1);
+  row1.appendChild(input1);
+
+  var row2 = mk('div');
+  var lbl2 = mk('div', 'sec-label', 'Prazo projetado: 10 anos');
+  var input2 = mk('input');
+  input2.type = 'range';
+  input2.min = '1';
+  input2.max = '20';
+  input2.step = '1';
+  input2.value = '10';
+  input2.style.width = '100%';
+  row2.appendChild(lbl2);
+  row2.appendChild(input2);
+
+  calcBox.appendChild(row1);
+  calcBox.appendChild(row2);
+  rendSec.appendChild(calcBox);
+
   var barsCont = mk('div');
-  buildBarras(barsCont);
+  buildBarras(barsCont, 50000, 10);
   rendSec.appendChild(barsCont);
+
+  function updateCalc() {
+    var v = parseInt(input1.value, 10);
+    var a = parseInt(input2.value, 10);
+    lbl1.textContent = 'Saldo do FGTS: R$ ' + v.toLocaleString('pt-BR');
+    lbl2.textContent = 'Prazo projetado: ' + a + (a === 1 ? ' ano' : ' anos');
+    buildBarras(barsCont, v, a);
+  }
+
+  input1.oninput = updateCalc;
+  input2.oninput = updateCalc;
+
   body.appendChild(rendSec);
 
   body.appendChild(mkCallout('Simulação ilustrativa com base em médias históricas. Rendimentos passados não garantem resultados futuros. Valores brutos sem considerar IR.', 'w', 'font-size:12px'));
@@ -369,7 +415,7 @@ function render7() {
   var thead = mk('thead');
   var hr = mk('tr');
   var ths = ['Aspecto', 'Regime CLT', 'Regime estatutário'];
-  ths.forEach(function(h, i) {
+  ths.forEach(function (h, i) {
     var th = mk('th', '', h);
     if (i === 0) th.style.width = '25%';
     hr.appendChild(th);
@@ -384,9 +430,9 @@ function render7() {
     ['Irredutibilidade', 'Garantida pela LC 3.231/2003', 'Pode ser incorporada expressamente ao novo estatuto'],
     ['Risco de alteração', 'Existe — por nova lei municipal', 'Existe — por nova lei municipal (mesmo mecanismo)']
   ];
-  rows7.forEach(function(row) {
+  rows7.forEach(function (row) {
     var tr = mk('tr');
-    row.forEach(function(cell, ci) {
+    row.forEach(function (cell, ci) {
       var td = mk('td', '', cell);
       if (ci === 0) td.style.fontWeight = '500';
       tr.appendChild(td);
@@ -527,12 +573,12 @@ var RENDERERS = [
  * Atualiza sidebar e exibe o painel correspondente.
  * @param {number} idx - índice do módulo (0–11)
  */
-function go(idx) {
+function go(idx, skipHash) {
   var sbItems = document.querySelectorAll('.sb-item');
   var panels = document.querySelectorAll('.pnl');
 
-  sbItems.forEach(function(it) { it.classList.remove('on'); });
-  panels.forEach(function(p) { p.classList.remove('on'); });
+  sbItems.forEach(function (it) { it.classList.remove('on'); });
+  panels.forEach(function (p) { p.classList.remove('on'); });
 
   if (sbItems[idx]) sbItems[idx].classList.add('on');
 
@@ -541,6 +587,22 @@ function go(idx) {
     pnl.classList.add('on');
     document.querySelector('.main').scrollTop = 0;
   }
+
+  if (!skipHash) {
+    var newHash = 'modulo-' + (idx + 1);
+    if (window.location.hash !== '#' + newHash) {
+      if (history.pushState) {
+        history.pushState(null, null, '#' + newHash);
+      } else {
+        window.location.hash = newHash;
+      }
+    }
+  }
+
+  var sb = document.getElementById('sidebar');
+  var overlay = document.querySelector('.sb-overlay');
+  if (sb) sb.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
 }
 
 /**
@@ -549,7 +611,7 @@ function go(idx) {
 function buildPanels() {
   var main = document.getElementById('main');
   if (!main) return;
-  RENDERERS.forEach(function(renderFn) {
+  RENDERERS.forEach(function (renderFn) {
     main.appendChild(renderFn());
   });
 }

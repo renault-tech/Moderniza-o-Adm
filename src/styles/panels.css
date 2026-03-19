@@ -89,3 +89,24 @@
   height: 0.5px;
   background: var(--color-border-tertiary);
 }
+
+.burger-menu {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.burger-menu svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .burger-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
