@@ -1,0 +1,912 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif}
+.app{display:flex;min-height:640px;border:0.5px solid var(--color-border-tertiary);border-radius:16px;overflow:hidden;background:var(--color-background-primary)}
+.sb{width:220px;flex-shrink:0;background:#1c1c1e;display:flex;flex-direction:column}
+.sb-head{padding:20px 16px 14px}
+.sb-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sb-icon{width:32px;height:32px;border-radius:8px;background:#0071e3;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+.sb-title{font-size:13px;font-weight:600;color:#f5f5f7;letter-spacing:-0.01em}
+.sb-sub{font-size:11px;color:#98989d;margin-top:1px}
+.sb-sep{height:0.5px;background:#38383a;margin:4px 0}
+.sb-grp{font-size:10px;font-weight:600;color:#636366;letter-spacing:.06em;padding:14px 16px 5px;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;border-radius:0;transition:background .1s;border-left:2px solid transparent;position:relative}
+.sb-item:hover{background:#2c2c2e}
+.sb-item.on{background:#2c2c2e;border-left-color:#0071e3}
+.sb-dot{width:22px;height:22px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.sb-lbl{font-size:12px;color:#aeaeb2;line-height:1.3;flex:1}
+.sb-item.on .sb-lbl{color:#f5f5f7;font-weight:500}
+.sb-badge{background:#ff453a;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;min-width:16px;text-align:center}
+.sb-foot{padding:12px 16px;border-top:0.5px solid #38383a;margin-top:auto}
+.sb-foot p{font-size:10px;color:#636366}
+.main{flex:1;overflow-y:auto;min-width:0;background:var(--color-background-secondary)}
+.pnl{display:none;flex-direction:column}
+.pnl.on{display:flex}
+.phead{background:var(--color-background-primary);padding:22px 28px 18px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.phead-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.phead-num{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.02em}
+.phead h2{font-size:20px;font-weight:600;color:var(--color-text-primary);letter-spacing:-0.02em;margin-bottom:4px}
+.phead p{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.pbody{padding:22px 28px;display:flex;flex-direction:column;gap:20px}
+.sec-label{font-size:11px;font-weight:600;color:var(--color-text-secondary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.kpi{background:var(--color-background-primary);border-radius:12px;padding:14px 16px;border:0.5px solid var(--color-border-tertiary)}
+.kpi-l{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500}
+.kpi-v{font-size:24px;font-weight:600;color:var(--color-text-primary);letter-spacing:-0.02em}
+.kpi-d{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:16px}
+.card-t{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:5px}
+.card-d{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.hl{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6}
+.hl-i{background:var(--color-background-info);color:var(--color-text-info)}
+.hl-s{background:var(--color-background-success);color:var(--color-text-success)}
+.hl-w{background:var(--color-background-warning);color:var(--color-text-warning)}
+.hl-d{background:var(--color-background-danger);color:var(--color-text-danger)}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.tbl th{background:var(--color-background-secondary);color:var(--color-text-secondary);font-weight:500;padding:9px 12px;text-align:left;border:0.5px solid var(--color-border-tertiary);font-size:11px}
+.tbl td{padding:9px 12px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top;line-height:1.5}
+.tbl tr:nth-child(even) td{background:var(--color-background-secondary)}
+.tbl-wrap{border-radius:10px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.tbl-wrap .tbl th,.tbl-wrap .tbl td{border-left:none;border-right:none;border-top:none}
+.tbl-wrap .tbl th:first-child,.tbl-wrap .tbl td:first-child{border-left:none}
+.achg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.ach{display:flex;gap:9px;padding:10px 12px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;align-items:flex-start}
+.ach-n{width:26px;height:26px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.ach-t{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.ach-d{font-size:11px;color:var(--color-text-secondary);margin-top:1px;line-height:1.3}
+.pros-cons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pro-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:14px}
+.pro-box-head{font-size:12px;font-weight:600;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.pro-head-g{color:#27500A}.pro-head-r{color:#A32D2D}
+.pro-item{display:flex;gap:8px;font-size:12px;color:var(--color-text-primary);margin-bottom:8px;line-height:1.4;align-items:flex-start}
+.dot-g{width:14px;height:14px;border-radius:50%;background:#EAF3DE;border:1.5px solid #3B6D11;flex-shrink:0;margin-top:1px}
+.dot-r{width:14px;height:14px;border-radius:50%;background:#FCEBEB;border:1.5px solid #A32D2D;flex-shrink:0;margin-top:1px}
+.flow-step{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:12px 14px;margin-bottom:6px}
+.flow-step-t{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.flow-step-d{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.flow-arrow{text-align:center;font-size:14px;color:var(--color-text-secondary);padding:3px 0}
+.flow-step.blue{background:var(--color-background-info);border-color:var(--color-border-info)}
+.flow-step.blue .flow-step-t{color:var(--color-text-info)}
+.flow-step.blue .flow-step-d{color:var(--color-text-info);opacity:.85}
+.flow-step.green{background:var(--color-background-success);border-color:var(--color-border-success)}
+.flow-step.green .flow-step-t{color:var(--color-text-success)}
+.flow-step.green .flow-step-d{color:var(--color-text-success);opacity:.85}
+.flow-step.gray{background:var(--color-background-secondary);border-color:var(--color-border-secondary)}
+.flow-step.gray .flow-step-t{color:var(--color-text-secondary)}
+.flow-step.gray .flow-step-d{color:var(--color-text-secondary);opacity:.85}
+.vs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
+.vs-card{border-radius:12px;padding:16px}
+.vs-clt{background:#EFF6FF;border:0.5px solid #B5D4F4}
+.vs-est{background:#F0FDF4;border:0.5px solid #C0DD97}
+.vs-head{font-size:13px;font-weight:600;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid rgba(0,0,0,.08)}
+.vs-head-b{color:#0C447C}.vs-head-g{color:#27500A}
+.vs-li{display:flex;gap:7px;font-size:12px;color:#1a1a1a;margin-bottom:7px;align-items:flex-start;line-height:1.4}
+.vs-li.neg{color:#636366}
+.vs-sym-b{color:#0071e3;font-size:14px;flex-shrink:0;margin-top:-1px}
+.vs-sym-g{color:#2d9d57;font-size:14px;flex-shrink:0;margin-top:-1px}
+.vs-sym-r{color:#e8453c;font-size:14px;flex-shrink:0;margin-top:-1px}
+.tl-row{display:flex;gap:12px;padding-bottom:16px;position:relative}
+.tl-row:not(:last-child)::before{content:'';position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--color-border-tertiary)}
+.tl-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;z-index:1;background:var(--color-background-primary);border:2px solid;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.tl-ok{border-color:#2d9d57;color:#2d9d57}
+.tl-now{border-color:#0071e3;color:#0071e3;background:#EFF6FF}
+.tl-pend{border-color:var(--color-border-secondary);color:var(--color-text-secondary)}
+.tl-tt{font-size:13px;font-weight:500;color:var(--color-text-primary);padding-top:4px}
+.tl-dt{font-size:11px;color:var(--color-text-secondary);font-weight:400;margin-left:7px}
+.tl-dd{font-size:12px;color:var(--color-text-secondary);margin-top:3px;line-height:1.5}
+.faq-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;margin-bottom:7px;overflow:hidden}
+.faq-q{padding:13px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-q:hover{background:var(--color-background-secondary)}
+.faq-qt{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1;line-height:1.4}
+.faq-ic{width:20px;height:20px;border-radius:50%;background:var(--color-background-info);color:var(--color-text-info);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:400}
+.faq-a{padding:0 16px 13px;font-size:13px;color:var(--color-text-secondary);line-height:1.7;display:none}
+.faq-a.open{display:block}
+.faq-ref{font-size:11px;color:var(--color-text-secondary);margin-top:8px;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary)}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.bar-lbl{width:160px;flex-shrink:0;font-size:12px;color:var(--color-text-secondary)}
+.bar-track{flex:1;height:8px;border-radius:8px;background:var(--color-background-secondary);overflow:hidden}
+.bar-fill{height:100%;border-radius:8px}
+.bar-val{width:80px;font-size:12px;font-weight:500;color:var(--color-text-primary);text-align:right;flex-shrink:0}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.02em}
+.pill-r{background:#FCEBEB;color:#A32D2D}
+.pill-b{background:#E6F1FB;color:#0C447C}
+.pill-g{background:#EAF3DE;color:#27500A}
+.pill-w{background:#FAEEDA;color:#633806}
+.divider{height:0.5px;background:var(--color-border-tertiary)}
+</style>
+
+<div class="app">
+
+<div class="sb">
+  <div class="sb-head">
+    <div class="sb-logo-row">
+      <div class="sb-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div>
+        <div class="sb-title">Modernização</div>
+        <div class="sb-sub">Cataguases · 2026</div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-sep"></div>
+
+  <div class="sb-grp">Contexto</div>
+  <div class="sb-item on" onclick="go(0,this)">
+    <div class="sb-dot" style="background:#e8453c">01</div>
+    <div class="sb-lbl">Diagnóstico e auditoria</div>
+    <div class="sb-badge">17</div>
+  </div>
+  <div class="sb-item" onclick="go(1,this)">
+    <div class="sb-dot" style="background:#0071e3">02</div>
+    <div class="sb-lbl">O que é a modernização</div>
+  </div>
+
+  <div class="sb-grp">Regimes jurídicos</div>
+  <div class="sb-item" onclick="go(2,this)">
+    <div class="sb-dot" style="background:#6e6ce3">03</div>
+    <div class="sb-lbl">O que é a CLT</div>
+  </div>
+  <div class="sb-item" onclick="go(3,this)">
+    <div class="sb-dot" style="background:#2d9d57">04</div>
+    <div class="sb-lbl">O que é o estatuto</div>
+  </div>
+  <div class="sb-item" onclick="go(4,this)">
+    <div class="sb-dot" style="background:#bf8600">05</div>
+    <div class="sb-lbl">CLT vs Estatuto</div>
+  </div>
+
+  <div class="sb-grp">Direitos e carreira</div>
+  <div class="sb-item" onclick="go(5,this)">
+    <div class="sb-dot" style="background:#2d9d57">06</div>
+    <div class="sb-lbl">FGTS e rendimento</div>
+  </div>
+  <div class="sb-item" onclick="go(6,this)">
+    <div class="sb-dot" style="background:#0071e3">07</div>
+    <div class="sb-lbl">Plano de cargos (PCCV)</div>
+  </div>
+  <div class="sb-item" onclick="go(7,this)">
+    <div class="sb-dot" style="background:#2d9d57">08</div>
+    <div class="sb-lbl">Jornada de 6 horas</div>
+  </div>
+  <div class="sb-item" onclick="go(8,this)">
+    <div class="sb-dot" style="background:#6e6ce3">09</div>
+    <div class="sb-lbl">Estabilidade</div>
+  </div>
+
+  <div class="sb-grp">Jurisprudência</div>
+  <div class="sb-item" onclick="go(9,this)">
+    <div class="sb-dot" style="background:#bf8600">10</div>
+    <div class="sb-lbl">STF e TST: cronologia</div>
+  </div>
+  <div class="sb-item" onclick="go(10,this)">
+    <div class="sb-dot" style="background:#0071e3">11</div>
+    <div class="sb-lbl">Comissões e cronograma</div>
+  </div>
+  <div class="sb-item" onclick="go(11,this)">
+    <div class="sb-dot" style="background:#636366">12</div>
+    <div class="sb-lbl">Perguntas frequentes</div>
+  </div>
+
+  <div class="sb-foot">
+    <p>Sec. de Administração</p>
+    <p style="margin-top:2px">Março de 2026</p>
+  </div>
+</div>
+
+<div class="main">
+
+<div class="pnl on" id="p0">
+  <div class="phead">
+    <div class="phead-top">
+      <span class="pill pill-r">Módulo 01</span>
+      <span class="pill pill-w">17 achados</span>
+    </div>
+    <h2>Diagnóstico e auditoria INTEC 2024</h2>
+    <p>O Instituto INTEC realizou auditoria completa da folha de pagamento de 2024 e identificou 17 não conformidades com impacto financeiro e risco jurídico imediato para o município e para os servidores.</p>
+  </div>
+  <div class="pbody">
+    <div>
+      <div class="sec-label">Números do diagnóstico</div>
+      <div class="g4">
+        <div class="kpi"><div class="kpi-l">Servidores ativos</div><div class="kpi-v">2.573</div><div class="kpi-d">Folha 2024 · sistema Betha</div></div>
+        <div class="kpi"><div class="kpi-l">Achados INTEC</div><div class="kpi-v" style="color:#e8453c">17</div><div class="kpi-d">Não conformidades legais</div></div>
+        <div class="kpi"><div class="kpi-l">Prejuízo FGTS</div><div class="kpi-v" style="color:#e8453c">R$ 5,1 mi</div><div class="kpi-d">Depósitos irregulares em 2024</div></div>
+        <div class="kpi"><div class="kpi-l">Contratos vencidos</div><div class="kpi-v" style="color:#bf8600">171</div><div class="kpi-d">Acima de 2 anos · R$ 11 mi</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-label">Os 17 achados da auditoria</div>
+      <div class="achg" id="achados-container"></div>
+    </div>
+    <div>
+      <div class="sec-label">Contexto jurídico</div>
+      <div class="g2">
+        <div class="card"><div class="card-t">Estatuto vigente: Lei nº 52/1951</div><div class="card-d">Um instrumento de 75 anos, anterior à CF/88 e a toda a legislação trabalhista moderna. Não contempla estabilidade constitucional, avaliação de desempenho, progressão por mérito ou qualquer mecanismo moderno de gestão de pessoas.</div></div>
+        <div class="card"><div class="card-t">TAC com o Ministério Público</div><div class="card-d">Título executivo extrajudicial (Lei nº 7.347/1985, art. 5º, §6º). Não é recomendação: é obrigação jurídica vinculante com prazos e consequências em caso de descumprimento. O município assumiu esse compromisso formalmente.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pnl" id="p1">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-b">Módulo 02</span></div>
+    <h2>O que é a modernização administrativa</h2>
+    <p>Um processo de regularização jurídica, valorização real e construção participativa de uma nova estrutura funcional para os servidores do município.</p>
+  </div>
+  <div class="pbody">
+    <div>
+      <div class="sec-label">A modernização é e não é</div>
+      <div class="pros-cons">
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-g">A modernização É</div>
+          <div id="eh-container"></div>
+        </div>
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-r">A modernização NÃO É</div>
+          <div id="naoe-container"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-label">Os três pilares</div>
+      <div class="g3" id="pilares-container"></div>
+    </div>
+    <div class="hl hl-w">Nenhum projeto foi protocolado na Câmara Municipal até a presente data. O processo participativo com as comissões setoriais ainda está em andamento.</div>
+  </div>
+</div>
+
+<div class="pnl" id="p2">
+  <div class="phead">
+    <div class="phead-top"><span class="pill" style="background:#EEEDFE;color:#3C3489">Módulo 03</span></div>
+    <h2>O que é o regime CLT</h2>
+    <p>A Consolidação das Leis do Trabalho foi criada em 1943 para regular relações de trabalho no setor privado. Entenda sua natureza, o que protege e seus limites no serviço público municipal.</p>
+  </div>
+  <div class="pbody">
+    <div class="card"><div class="card-t">Origem e natureza jurídica</div><div class="card-d">A CLT (Decreto-Lei nº 5.452/1943) foi concebida para equilibrar a desigualdade natural entre empregador e empregado no setor privado. Seu princípio central é a proteção da parte mais fraca da relação trabalhista. Em Cataguases, servidores da administração direta foram contratados sob esse regime — uma situação que o Ministério Público considera estruturalmente irregular, pois a administração direta não deveria usar o regime privado como regra geral.</div></div>
+    <div>
+      <div class="sec-label">Vantagens para o servidor municipal</div>
+      <div class="pros-cons">
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-g">O que a CLT garante</div>
+          <div id="clt-pros"></div>
+        </div>
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-r">Limitações no serviço público</div>
+          <div id="clt-cons"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hl hl-i">Em Cataguases, o servidor celetista concursado não é empregado público (que integra empresa pública ou sociedade de economia mista). É um servidor da administração direta sob regime atípico, o que gera a irregularidade apontada no diagnóstico.</div>
+  </div>
+</div>
+
+<div class="pnl" id="p3">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-g">Módulo 04</span></div>
+    <h2>O que é o regime estatutário</h2>
+    <p>O Regime Jurídico Único dos servidores públicos — sua natureza constitucional, princípios e o que ele oferece estruturalmente ao servidor de Cataguases.</p>
+  </div>
+  <div class="pbody">
+    <div class="card"><div class="card-t">Natureza e fundamento constitucional</div><div class="card-d">No regime estatutário o vínculo entre o servidor e o Estado é institucional, não contratual. O servidor ocupa um cargo público criado por lei. Seus direitos e deveres não decorrem de um acordo bilateral, mas do estatuto e da Constituição Federal. A prefeitura não age como empregadora — age como poder público organizando seus quadros para prestar serviços à população. Base constitucional: art. 39 da CF/88.</div></div>
+    <div>
+      <div class="pros-cons">
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-g">Vantagens do estatuto</div>
+          <div id="est-pros"></div>
+        </div>
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-r">Limitações</div>
+          <div id="est-cons"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hl hl-s">No modelo proposto para Cataguases, quem migrar não faz novo estágio probatório e tem todo o tempo de serviço anterior reconhecido integralmente. As limitações típicas do estatuto para novos ingressantes não se aplicam à migração de servidores já estáveis.</div>
+  </div>
+</div>
+
+<div class="pnl" id="p4">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-w">Módulo 05</span></div>
+    <h2>CLT vs Estatuto: comparativo completo</h2>
+    <p>Análise lado a lado dos dois regimes no contexto específico da Prefeitura de Cataguases, sem generalizações para outros entes federativos.</p>
+  </div>
+  <div class="pbody">
+    <div>
+      <div class="sec-label">Visão geral</div>
+      <div class="vs">
+        <div class="vs-card vs-clt">
+          <div class="vs-head vs-head-b">Regime CLT (hoje)</div>
+          <div id="vs-clt-container"></div>
+        </div>
+        <div class="vs-card vs-est">
+          <div class="vs-head vs-head-g">Regime Estatutário (proposto)</div>
+          <div id="vs-est-container"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-label">Tabela detalhada</div>
+      <div class="tbl-wrap">
+        <table class="tbl" id="cmp-table"></table>
+      </div>
+    </div>
+    <div class="hl hl-i">Ponto neutro para Cataguases: aposentadoria pelo INSS em ambos os regimes. O município não adota RPPS, portanto esse aspecto não diferencia os dois regimes localmente.</div>
+  </div>
+</div>
+
+<div class="pnl" id="p5">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-g">Módulo 06</span></div>
+    <h2>FGTS: o que acontece na migração e comparativo de rendimento</h2>
+    <p>O saldo acumulado não é perdido. Entenda o mecanismo de rescisão instrumental e a análise financeira comparativa do FGTS versus alternativas de investimento.</p>
+  </div>
+  <div class="pbody">
+    <div class="hl hl-s" style="font-size:14px;font-weight:500">O servidor que migrar para o estatutário saca o saldo integral do FGTS acumulado, sem perda alguma, por meio da rescisão instrumental do contrato CLT.</div>
+    <div>
+      <div class="sec-label">Fluxo da rescisão instrumental</div>
+      <div id="fgts-flow"></div>
+    </div>
+    <div>
+      <div class="sec-label">Rendimento histórico: FGTS vs alternativas — simulação R$ 50.000 em 10 anos</div>
+      <div class="card" style="margin-bottom:10px"><div class="card-d">O FGTS rende TR + 3% ao ano. Historicamente esse rendimento fica abaixo da inflação (IPCA) e muito abaixo do CDI. Ao sacar o saldo na migração e aplicar em renda fixa conservadora, o servidor obtém rendimento real significativamente superior.</div></div>
+      <div id="bars-container"></div>
+    </div>
+    <div class="hl hl-w" style="font-size:12px">Simulação ilustrativa com base em médias históricas. Rendimentos passados não garantem resultados futuros. Valores brutos sem considerar IR.</div>
+    <div class="hl hl-i">Quem preferir ficar na CLT: nenhuma consequência. Contrato continua vigente, FGTS continua sendo depositado normalmente (8% mensal) e todos os direitos trabalhistas são preservados.</div>
+  </div>
+</div>
+
+<div class="pnl" id="p6">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-b">Módulo 07</span></div>
+    <h2>Plano de cargos, carreiras e vencimentos (PCCV)</h2>
+    <p>Estatuto e PCCV são instrumentos distintos e complementares. Entenda o que cada um faz e o que o PCCV pode e não pode oferecer ao servidor celetista.</p>
+  </div>
+  <div class="pbody">
+    <div>
+      <div class="sec-label">Estatuto ≠ PCCV</div>
+      <div class="g2">
+        <div class="card" style="border-top:2px solid #0071e3"><div class="card-t">Estatuto responde:</div><div class="card-d">Como é a relação do servidor com o Estado? Quais são seus direitos, deveres, garantias e proteções institucionais?</div></div>
+        <div class="card" style="border-top:2px solid #6e6ce3"><div class="card-t">PCCV responde:</div><div class="card-d">Qual é o cargo? Quanto recebe? Como cresce na carreira? Quais são as tabelas salariais e os critérios de progressão?</div></div>
+      </div>
+      <div class="hl hl-i" style="margin-top:10px">São complementares — um não substitui o outro. O estatuto sem PCCV é uma casca sem estrutura de carreira. O PCCV sem estatuto é uma tabela sem garantias institucionais.</div>
+    </div>
+    <div>
+      <div class="pros-cons">
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-g">O PCCV pode oferecer ao servidor CLT</div>
+          <div id="pccv-pode"></div>
+        </div>
+        <div class="pro-box">
+          <div class="pro-box-head pro-head-r">O PCCV não consegue oferecer</div>
+          <div id="pccv-nao"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-label">Fluxo da carreira com o novo PCCV</div>
+      <div id="pccv-flow"></div>
+    </div>
+  </div>
+</div>
+
+<div class="pnl" id="p7">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-g">Módulo 08</span></div>
+    <h2>A jornada de 6 horas: história, base legal e situação atual</h2>
+    <p>A jornada de 30h/semana foi conquistada por lei municipal em 2003, com irredutibilidade salarial garantida. Entenda o que a auditoria realmente encontrou.</p>
+  </div>
+  <div class="pbody">
+    <div>
+      <div class="sec-label">A base legal da conquista de 2003</div>
+      <div class="g2">
+        <div class="card" style="border-top:2px solid #2d9d57"><div class="card-t">LC nº 3.231/2003</div><div class="card-d">Alterou o art. 58 da LC 3.023/2001. Estabeleceu 30h/semana para os servidores em geral. Garantiu expressamente irredutibilidade salarial: o valor de 6 horas equivale ao que era pago por 8 horas.</div></div>
+        <div class="card" style="border-top:2px solid #2d9d57"><div class="card-t">LC nº 3.242/2003</div><div class="card-d">Alterou o art. 44 da LC 3.024/2001. Estabeleceu 30h/semana para o Grupo Ocupacional de Serviço Administrativo e demais quadros ocupacionais.</div></div>
+      </div>
+      <div class="hl hl-s" style="margin-top:10px">A jornada de 6 horas tem base legal municipal sólida e irredutibilidade salarial garantida na própria lei. É uma conquista legítima aprovada pela Câmara Municipal. A modernização preserva essa conquista integralmente.</div>
+    </div>
+    <div class="hl hl-w">O Achado nº 13 não diz que a jornada de 6 horas é irregular. Diz que 1.428 servidores estavam trabalhando acima de 30h/semana — acima do que a própria lei municipal determina. O problema é o descumprimento da jornada, não a jornada em si.</div>
+    <div>
+      <div class="sec-label">Proteção da jornada nos dois regimes</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th style="width:25%">Aspecto</th><th>Regime CLT</th><th>Regime estatutário</th></tr></thead>
+          <tbody>
+            <tr><td>Base da jornada</td><td>Lei municipal LC 3.231 e 3.242/2003</td><td>Pode ser fixada diretamente no novo estatuto por lei municipal</td></tr>
+            <tr><td>Para alterar</td><td>Precisa de nova lei municipal pela Câmara</td><td>Precisa de nova lei municipal pela Câmara — mesma proteção democrática</td></tr>
+            <tr><td>Irredutibilidade</td><td>Garantida pela LC 3.231/2003</td><td>Pode ser incorporada expressamente ao novo estatuto</td></tr>
+            <tr><td>Risco de alteração</td><td>Existe — por nova lei municipal</td><td>Existe — por nova lei municipal (mesmo mecanismo)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pnl" id="p8">
+  <div class="phead">
+    <div class="phead-top"><span class="pill" style="background:#EEEDFE;color:#3C3489">Módulo 09</span></div>
+    <h2>Estabilidade: o que o servidor tem e o que o estatuto garante</h2>
+    <p>A diferença entre proteção processual no regime CLT e estabilidade constitucional automática no regime estatutário, no contexto específico de Cataguases.</p>
+  </div>
+  <div class="pbody">
+    <div class="vs">
+      <div class="vs-card vs-clt">
+        <div class="vs-head vs-head-b">Servidor CLT concursado (hoje)</div>
+        <div class="vs-li"><span class="vs-sym-b">+</span>Proteção contra demissão arbitrária existe</div>
+        <div class="vs-li neg"><span class="vs-sym-r">−</span>Proteção é processual: exige ação na Justiça do Trabalho</div>
+        <div class="vs-li neg"><span class="vs-sym-r">−</span>Ônus de provar o arbítrio é do servidor</div>
+        <div class="vs-li neg"><span class="vs-sym-r">−</span>Resultado depende da jurisprudência local da JT</div>
+        <div class="vs-li neg"><span class="vs-sym-r">−</span>Demissão sem justa causa gera verbas rescisórias, não reintegração automática</div>
+      </div>
+      <div class="vs-card vs-est">
+        <div class="vs-head vs-head-g">Servidor estatutário (proposto)</div>
+        <div class="vs-li"><span class="vs-sym-g">+</span>Estabilidade constitucional automática após 3 anos (art. 41, CF/88)</div>
+        <div class="vs-li"><span class="vs-sym-g">+</span>Demissão sem PAD é nula de pleno direito — sem ação judicial</div>
+        <div class="vs-li"><span class="vs-sym-g">+</span>Ônus da prova é da administração no PAD</div>
+        <div class="vs-li"><span class="vs-sym-g">+</span>Garantia constitucional uniforme em todo o país</div>
+        <div class="vs-li"><span class="vs-sym-g">+</span>3 hipóteses taxativas de perda do cargo, apenas</div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-label">Hipóteses de perda do cargo no estatuto (taxativas)</div>
+      <div class="g3">
+        <div class="card" style="border-top:2px solid #bf8600"><div class="card-t">Sentença judicial</div><div class="card-d">Decisão definitiva do Poder Judiciário transitada em julgado</div></div>
+        <div class="card" style="border-top:2px solid #bf8600"><div class="card-t">PAD</div><div class="card-d">Processo Administrativo Disciplinar com contraditório e ampla defesa garantidos pela CF/88</div></div>
+        <div class="card" style="border-top:2px solid #bf8600"><div class="card-t">Avaliação negativa</div><div class="card-d">Resultado negativo em avaliação periódica de desempenho, na forma de lei complementar</div></div>
+      </div>
+    </div>
+    <div class="hl hl-s">Fora dessas três hipóteses, a demissão do servidor estatutário estável é nula de pleno direito — automaticamente, sem necessidade de ação judicial para se defender.</div>
+  </div>
+</div>
+
+<div class="pnl" id="p9">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-w">Módulo 10</span></div>
+    <h2>Cronologia: STF e TST</h2>
+    <p>As principais decisões dos tribunais superiores que formam o pano de fundo jurídico da modernização administrativa de Cataguases.</p>
+  </div>
+  <div class="pbody">
+    <div id="tl-container"></div>
+    <div class="hl hl-i">A ADI 2.135 (nov/2024) liberou o regime misto, mas não extinguiu o TAC nem as 17 irregularidades documentadas pela auditoria INTEC. O processo de modernização é necessário independentemente da decisão do STF.</div>
+  </div>
+</div>
+
+<div class="pnl" id="p10">
+  <div class="phead">
+    <div class="phead-top"><span class="pill pill-b">Módulo 11</span><span class="pill pill-g" style="margin-left:6px">Portaria 109/2026</span></div>
+    <h2>Comissões, processo participativo e cronograma</h2>
+    <p>A estrutura de participação dos servidores e o cronograma das 6 fases do processo de modernização.</p>
+  </div>
+  <div class="pbody">
+    <div>
+      <div class="sec-label">Estrutura das comissões</div>
+      <div class="flow-step blue"><div class="flow-step-t">Comissão Geral Coordenadora</div><div class="flow-step-d">5 membros titulares + 1 suplente · Coordenada pela Secretaria de Administração · Instância central de deliberação</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="g2">
+        <div class="flow-step gray"><div class="flow-step-t">Setorial da Educação</div><div class="flow-step-d">3 membros · 1 eleito pelos servidores</div></div>
+        <div class="flow-step gray"><div class="flow-step-t">Setorial da Saúde</div><div class="flow-step-d">3 membros · 1 eleito pelos servidores</div></div>
+        <div class="flow-step gray"><div class="flow-step-t">Setorial das Demais Secretarias</div><div class="flow-step-d">7 membros · 3 eleitos pelos servidores</div></div>
+        <div class="flow-step gray"><div class="flow-step-t">Setorial do Estatuto do Servidor</div><div class="flow-step-d">9 membros · 4 eleitos pelos servidores</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-label">Cronograma — 6 fases</div>
+      <div id="cronograma-container"></div>
+    </div>
+  </div>
+</div>
+
+<div class="pnl" id="p11">
+  <div class="phead">
+    <div class="phead-top"><span class="pill" style="background:#F1EFE8;color:#444441">Módulo 12</span></div>
+    <h2>Perguntas frequentes dos servidores</h2>
+    <p>Respostas diretas às principais dúvidas levantadas na Sessão da Câmara de 16/03/2026 e no processo de modernização, com fundamento jurídico.</p>
+  </div>
+  <div class="pbody">
+    <div id="faq-container"></div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+var current = 0;
+var items = document.querySelectorAll('.sb-item');
+var panels = document.querySelectorAll('.pnl');
+
+function go(i, el) {
+  items.forEach(function(x){ x.classList.remove('on'); });
+  panels.forEach(function(x){ x.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  document.getElementById('p' + i).classList.add('on');
+  document.querySelector('.main').scrollTop = 0;
+  current = i;
+}
+
+function tfaq(i) {
+  var a = document.getElementById('fa' + i);
+  var ic = document.getElementById('fi' + i);
+  if (!a || !ic) return;
+  var isOpen = a.classList.toggle('open');
+  ic.textContent = isOpen ? '×' : '+';
+}
+
+function mkProItem(txt, isDot) {
+  var div = document.createElement('div');
+  div.className = 'pro-item';
+  var dot = document.createElement('div');
+  dot.className = isDot ? 'dot-g' : 'dot-r';
+  var span = document.createElement('span');
+  span.textContent = txt;
+  div.appendChild(dot);
+  div.appendChild(span);
+  return div;
+}
+
+function mkFlowStep(title, desc, cls) {
+  var div = document.createElement('div');
+  div.className = 'flow-step ' + cls;
+  var t = document.createElement('div');
+  t.className = 'flow-step-t';
+  t.textContent = title;
+  var d = document.createElement('div');
+  d.className = 'flow-step-d';
+  d.textContent = desc;
+  div.appendChild(t);
+  div.appendChild(d);
+  return div;
+}
+
+function mkArrow() {
+  var div = document.createElement('div');
+  div.className = 'flow-arrow';
+  div.textContent = '↓';
+  return div;
+}
+
+var achados = [
+  ['1','FGTS irregular','Prejuízo R$ 5,1 mi','d'],
+  ['2','Horas extras','Base de cálculo incorreta','w'],
+  ['3','Adicional pós-graduação','Valores divergentes','w'],
+  ['4','Acumulação de cargos','7 servidores · R$ 32 mil','d'],
+  ['5','Contratos vencidos','171 serv. · R$ 11 mi','d'],
+  ['6','Periculosidade','Pagamentos irregulares','w'],
+  ['7','Licenças sem vencimento','Prazo superior ao legal','w'],
+  ['8','Gratif. de fiscalização','Inferior ao devido','w'],
+  ['9','Teto remuneratório','1 servidor acima do teto','d'],
+  ['10','Adicional ESF','44 serv. sem base · R$ 1,2 mi','d'],
+  ['11','Médicos Psiquiatras','Pagamento inferior','w'],
+  ['12','Tempo de serviço','450 serv. prejudicados','w'],
+  ['13','Jornada de trabalho','1.428 acima de 30h/sem','w'],
+  ['14','Agentes contratação','Valores incorretos','w'],
+  ['15','Progressão horizontal','Irregularidades','w'],
+  ['16','Aposentadoria RPPS','Sem amparo legal','d'],
+  ['17','Honorários sucumbência','Desconformidade legal','w']
+];
+var cont = document.getElementById('achados-container');
+achados.forEach(function(a) {
+  var div = document.createElement('div');
+  div.className = 'ach';
+  var numDiv = document.createElement('div');
+  numDiv.className = 'ach-n';
+  numDiv.textContent = a[0];
+  numDiv.style.background = a[3]==='d' ? 'var(--color-background-danger)' : 'var(--color-background-warning)';
+  numDiv.style.color = a[3]==='d' ? 'var(--color-text-danger)' : 'var(--color-text-warning)';
+  var body = document.createElement('div');
+  var t = document.createElement('div');
+  t.className = 'ach-t';
+  t.textContent = a[1];
+  var d = document.createElement('div');
+  d.className = 'ach-d';
+  d.textContent = a[2];
+  body.appendChild(t);
+  body.appendChild(d);
+  div.appendChild(numDiv);
+  div.appendChild(body);
+  cont.appendChild(div);
+});
+
+var ehList = ['Regularização jurídica do funcionalismo','Novo estatuto substituindo a Lei nº 52/1951','Novo PCCV unificado com progressões claras','Processo voluntário — cada servidor decide','Participativo — comissões com representantes eleitos','Protetor de direitos adquiridos','Resposta ao TAC do Ministério Público'];
+var naoeList = ['Imposição de mudança de regime','Perda do FGTS acumulado','Redução de salários ou vantagens conquistadas','Risco ao emprego do servidor','Processo secreto ou sem participação','Projeto já protocolado na Câmara'];
+var ehCont = document.getElementById('eh-container');
+var naoeCont = document.getElementById('naoe-container');
+ehList.forEach(function(t){ ehCont.appendChild(mkProItem(t, true)); });
+naoeList.forEach(function(t){ naoeCont.appendChild(mkProItem(t, false)); });
+
+var pilaresData = [
+  ['Novo Estatuto','Lei municipal atualizada · Direitos, deveres e garantias · Estabilidade constitucional · Regime disciplinar justo','#EFF6FF','#0071e3'],
+  ['Novo PCCV','Tabela salarial unificada · Progressão por tempo e mérito · Reconhecimento de qualificação · Carreira estruturada','#EEEDFE','#6e6ce3'],
+  ['Migração voluntária','Opção individual de cada servidor · Sem coerção · Com todas as informações para decisão consciente','#F0FDF4','#2d9d57']
+];
+var pilCont = document.getElementById('pilares-container');
+pilaresData.forEach(function(p) {
+  var div = document.createElement('div');
+  div.className = 'card';
+  div.style.borderTop = '2px solid ' + p[3];
+  div.style.background = p[2];
+  var t = document.createElement('div');
+  t.className = 'card-t';
+  t.textContent = p[0];
+  var d = document.createElement('div');
+  d.className = 'card-d';
+  d.textContent = p[1];
+  div.appendChild(t);
+  div.appendChild(d);
+  pilCont.appendChild(div);
+});
+
+var cltProsList = ['FGTS com depósito mensal obrigatório de 8%','Décimo terceiro salário e férias com 1/3 adicional','Jornada 30h/semana garantida por lei municipal (LCs 3.231 e 3.242/2003)','Inalterabilidade lesiva — alterações contratuais lesivas são vedadas (art. 468 CLT)','Acesso à Justiça do Trabalho especializada em direitos sociais','Proteção das vantagens já incorporadas ao contrato individual'];
+var cltConsList = ['Estabilidade apenas processual — depende de ação na Justiça do Trabalho','Progressões futuras menos protegidas (Súmula 51 TST)','Regime irregular na administração direta municipal (MP)','Vínculo contratual — direitos decorrem do contrato, não diretamente da lei pública','FGTS depositado irregularmente para quem juridicamente não teria direito'];
+var cltP = document.getElementById('clt-pros');
+var cltC = document.getElementById('clt-cons');
+cltProsList.forEach(function(t){ cltP.appendChild(mkProItem(t, true)); });
+cltConsList.forEach(function(t){ cltC.appendChild(mkProItem(t, false)); });
+
+var estProsList = ['Estabilidade constitucional automática após 3 anos (art. 41, CF/88)','Demissão só via PAD, sentença ou avaliação negativa — sem essas, nula de pleno direito','Progressões futuras são direito do cargo — aplicadas automaticamente','Jornada pode ser fixada diretamente por lei municipal no estatuto','Irredutibilidade de vencimentos garantida pelo art. 37, XV, CF/88','Processo disciplinar rigoroso com contraditório e ampla defesa obrigatórios'];
+var estConsList = ['Sem FGTS mensal futuro — saldo acumulado é sacado na transição','Alterações legislativas dependem de aprovação na Câmara (igual à CLT)','Estágio probatório para novos ingressantes (dispensado para quem migrar)'];
+var estP = document.getElementById('est-pros');
+var estC = document.getElementById('est-cons');
+estProsList.forEach(function(t){ estP.appendChild(mkProItem(t, true)); });
+estConsList.forEach(function(t){ estC.appendChild(mkProItem(t, false)); });
+
+var vsCltData = [
+  ['+','FGTS 8% mensal garantido',false],
+  ['+','13º salário e férias com 1/3',false],
+  ['+','Proteção das vantagens conquistadas',false],
+  ['+','Jornada 30h com base legal (LC 2003)',false],
+  ['−','Estabilidade apenas processual/judicial',true],
+  ['−','Progressões futuras menos protegidas',true],
+  ['−','Regime irregular na adm. direta (MP)',true]
+];
+var vsEstData = [
+  ['+','Estabilidade constitucional automática (art. 41)',false],
+  ['+','Demissão sem PAD é nula de pleno direito',false],
+  ['+','Progressões futuras são direito do cargo',false],
+  ['+','Jornada 30h mantida e fixada no estatuto',false],
+  ['−','Sem FGTS futuro (saldo sacado na transição)',true],
+  ['+','Regime regular na administração direta',false],
+  ['+','Irredutibilidade salarial constitucional',false]
+];
+
+function buildVS(data, cont, isClt) {
+  data.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'vs-li' + (item[2] ? ' neg' : '');
+    var sym = document.createElement('span');
+    sym.className = item[0]==='+' ? (isClt ? 'vs-sym-b' : 'vs-sym-g') : 'vs-sym-r';
+    sym.textContent = item[0];
+    var txt = document.createTextNode(item[1]);
+    div.appendChild(sym);
+    div.appendChild(txt);
+    cont.appendChild(div);
+  });
+}
+buildVS(vsCltData, document.getElementById('vs-clt-container'), true);
+buildVS(vsEstData, document.getElementById('vs-est-container'), false);
+
+var cmpRows = [
+  ['Natureza','Contratual — regido pela CLT','Institucional — regido pelo estatuto e CF/88'],
+  ['Estabilidade','Proteção via contestação judicial','Automática após 3 anos · art. 41 CF'],
+  ['FGTS','8% mensal obrigatório','Saldo sacado na transição · sem depósito futuro'],
+  ['Previdência','INSS (regime geral)','INSS — mesma situação (sem RPPS em Cataguases)'],
+  ['Jornada 30h','LC 3.231 e 3.242/2003','Mantida e incorporada ao novo estatuto'],
+  ['Progressão futura','Pode ser alterada antes de ser atingida','Direito do cargo — aplicada automaticamente'],
+  ['Foro','Justiça do Trabalho','Vara de Fazenda Pública'],
+  ['Demissão','Requer motivação · contestável na JT','Só via PAD · sentença · avaliação negativa']
+];
+var tbl = document.getElementById('cmp-table');
+var thead = document.createElement('thead');
+var hr = document.createElement('tr');
+['Aspecto','CLT (hoje)','Estatutário (proposto)'].forEach(function(h){
+  var th = document.createElement('th');
+  th.textContent = h;
+  if (h==='Aspecto') th.style.width='22%';
+  hr.appendChild(th);
+});
+thead.appendChild(hr);
+tbl.appendChild(thead);
+var tbody = document.createElement('tbody');
+cmpRows.forEach(function(row, idx) {
+  var tr = document.createElement('tr');
+  row.forEach(function(cell, ci) {
+    var td = document.createElement('td');
+    td.textContent = cell;
+    if (ci===0) td.style.fontWeight='500';
+    tr.appendChild(td);
+  });
+  tbody.appendChild(tr);
+});
+tbl.appendChild(tbody);
+
+var fgtsSteps = [
+  ['Servidor decide migrar voluntariamente','Decisão individual, sem pressão ou prazo forçado','gray'],
+  ['Prefeitura formaliza a rescisão instrumental junto à CEF','O contrato CLT é extinto formalmente apenas para fins de liberação do FGTS — não é demissão','blue'],
+  ['Servidor saca o saldo integral da conta vinculada','100% do valor acumulado · sem multa de 40% pois não é rescisão por iniciativa do empregado','green'],
+  ['Imediata investidura no cargo estatutário','Com aproveitamento integral do tempo de serviço · sem novo estágio probatório','green'],
+  ['Regime estatutário vigente a partir daí','Sem novos depósitos de FGTS · Direitos regidos pelo estatuto e CF/88','blue']
+];
+var fgtsCont = document.getElementById('fgts-flow');
+fgtsSteps.forEach(function(s, i) {
+  fgtsCont.appendChild(mkFlowStep(s[0], s[1], s[2]));
+  if (i < fgtsSteps.length - 1) fgtsCont.appendChild(mkArrow());
+});
+
+var barsData = [
+  ['FGTS (TR + 3% a.a.)','~R$ 67.000','23','#e8453c'],
+  ['Poupança (~6% a.a.)','~R$ 89.000','44','#bf8600'],
+  ['100% CDI (~11% a.a.)','~R$ 142.000','100','#2d9d57'],
+  ['Tesouro Selic (~11% a.a.)','~R$ 142.000','100','#0071e3']
+];
+var barsCont = document.getElementById('bars-container');
+barsData.forEach(function(b) {
+  var row = document.createElement('div');
+  row.className = 'bar-row';
+  var lbl = document.createElement('div');
+  lbl.className = 'bar-lbl';
+  lbl.textContent = b[0];
+  var track = document.createElement('div');
+  track.className = 'bar-track';
+  var fill = document.createElement('div');
+  fill.className = 'bar-fill';
+  fill.style.width = b[2] + '%';
+  fill.style.background = b[3];
+  track.appendChild(fill);
+  var val = document.createElement('div');
+  val.className = 'bar-val';
+  val.textContent = b[1];
+  row.appendChild(lbl);
+  row.appendChild(track);
+  row.appendChild(val);
+  barsCont.appendChild(row);
+});
+
+var pccvPodeList = ['Tabela salarial com níveis e referências claras','Progressão horizontal por tempo de serviço','Progressão vertical por mérito ou titulação','Adicionais de qualificação e especialização','Gratificações por função ou responsabilidade','Licenças além do mínimo legal'];
+var pccvNaoList = ['Estabilidade constitucional automática (art. 41 CF/88)','Proteção de progressões futuras ainda não atingidas','Processo disciplinar com rigor de PAD estatutário','Vínculo institucional que dispensa ato de gestão','Segurança jurídica plena sobre benefícios futuros'];
+document.getElementById('pccv-pode').querySelectorAll && true;
+var pccvPodeCont = document.getElementById('pccv-pode');
+var pccvNaoCont = document.getElementById('pccv-nao');
+pccvPodeList.forEach(function(t){ pccvPodeCont.appendChild(mkProItem(t, true)); });
+pccvNaoList.forEach(function(t){ pccvNaoCont.appendChild(mkProItem(t, false)); });
+
+var pccvFlow = [
+  ['Ingresso por concurso público','Enquadramento no nível inicial do cargo','gray'],
+  ['Progressão horizontal','A cada triênio ou quinquênio, o servidor avança um nível na tabela — automaticamente','blue'],
+  ['Progressão vertical','Nova titulação ou avaliação aprovada avança para referência superior','blue'],
+  ['Servidor que migrou da CLT','Enquadrado no nível equivalente ao já conquistado — sem retrocesso','green'],
+  ['Topo de carreira','Máxima referência salarial do cargo · aposentadoria pelo INSS','gray']
+];
+var pccvFlowCont = document.getElementById('pccv-flow');
+pccvFlow.forEach(function(s, i) {
+  pccvFlowCont.appendChild(mkFlowStep(s[0], s[1], s[2]));
+  if (i < pccvFlow.length - 1) pccvFlowCont.appendChild(mkArrow());
+});
+
+var tlData = [
+  ['ok','1988','CF/88 — arts. 37 e 39','Constituição exige concurso público e organiza servidores por regime jurídico próprio. Art. 39 originalmente exigia Regime Jurídico Único na adm. direta.',''],
+  ['ok','1990','Lei Federal nº 8.112/1990','Arts. 241–243 estabelecem o modelo federal de migração voluntária CLT→estatutário, com aproveitamento integral do tempo de serviço. Precedente que Cataguases seguirá.','Modelo do município'],
+  ['ok','1998','EC nº 19/1998 — Reforma administrativa','Suprimiu a obrigatoriedade do Regime Jurídico Único, permitindo regime misto. Contestada por inconstitucionalidade formal, gerando 25 anos de incerteza jurídica nacional.',''],
+  ['ok','1999','STF suspende EC 19/1998 — ADI 2.135','O STF concede liminar suspendendo os efeitos da EC 19/1998 por vício formal no processo legislativo. O julgamento fica suspenso por 25 anos.',''],
+  ['ok','2017','TST — ArgInc 105100/1996','Firma entendimento: transmudação automática CLT→estatutário é válida apenas para servidores estáveis pelo art. 19 do ADCT (admitidos antes de 05/10/1983).','Referência para Cataguases'],
+  ['ok','nov/2024','STF julga ADI 2.135 — decisão definitiva','Declara constitucional a EC 19/1998. Municípios podem ter servidores nos dois regimes simultaneamente. Mas isso não revoga TACs já firmados nem sana irregularidades auditadas.','Marco central'],
+  ['now','2026','Cataguases — Processo em curso','Com base no panorama pós-ADI 2.135 e no TAC com o MP, o município inicia a modernização voluntária, com modelo baseado na Lei 8.112/1990 e consulta formal à CEF.','Fase atual']
+];
+var tlCont = document.getElementById('tl-container');
+tlData.forEach(function(item) {
+  var row = document.createElement('div');
+  row.className = 'tl-row';
+  var dot = document.createElement('div');
+  dot.className = 'tl-dot tl-' + item[0];
+  dot.textContent = item[0]==='ok' ? '✓' : '●';
+  var body = document.createElement('div');
+  body.style.flex = '1';
+  body.style.paddingTop = '4px';
+  var tt = document.createElement('div');
+  tt.className = 'tl-tt';
+  tt.textContent = item[2];
+  var dt = document.createElement('span');
+  dt.className = 'tl-dt';
+  dt.textContent = item[1];
+  tt.appendChild(dt);
+  if (item[4]) {
+    var badge = document.createElement('span');
+    badge.className = 'pill pill-b';
+    badge.style.marginLeft = '6px';
+    badge.textContent = item[4];
+    tt.appendChild(badge);
+  }
+  var dd = document.createElement('div');
+  dd.className = 'tl-dd';
+  dd.textContent = item[3];
+  body.appendChild(tt);
+  body.appendChild(dd);
+  row.appendChild(dot);
+  row.appendChild(body);
+  tlCont.appendChild(row);
+});
+
+var cronData = [
+  ['ok','2024–2025','Fase 1 — Diagnóstico','Contratação INTEC · Auditoria completa da folha · 17 achados · Relatório entregue'],
+  ['ok','fev/2026','Fase 2 — Estruturação participativa','Portaria 109/2026 · Eleições para comissões setoriais · Posse dos representantes eleitos'],
+  ['now','2026 — agora','Fase 3 — Construção dos instrumentos','INTEC elabora minuta do novo estatuto e PCCV · Comissões analisam e propõem ajustes'],
+  ['pend','a definir','Fase 4 — Audiências públicas','Consulta ampla a todos os servidores · Contribuições e emendas · Consolidação final'],
+  ['pend','a definir','Fase 5 — Tramitação legislativa','Envio à Câmara Municipal · Debates, audiências e votação · Aprovação e publicação'],
+  ['pend','a definir','Fase 6 — Implementação','Publicação das novas leis · Prazo de migração voluntária · Enquadramento de todos os servidores']
+];
+var cronCont = document.getElementById('cronograma-container');
+cronData.forEach(function(item) {
+  var row = document.createElement('div');
+  row.className = 'tl-row';
+  var dot = document.createElement('div');
+  dot.className = 'tl-dot tl-' + (item[0]==='ok'?'ok':item[0]==='now'?'now':'pend');
+  dot.textContent = item[0]==='ok'?'✓':item[0]==='now'?'●':'○';
+  var body = document.createElement('div');
+  body.style.flex = '1';
+  body.style.paddingTop = '4px';
+  var tt = document.createElement('div');
+  tt.className = 'tl-tt';
+  tt.textContent = item[2];
+  var dt = document.createElement('span');
+  dt.className = 'tl-dt';
+  dt.textContent = item[1];
+  tt.appendChild(dt);
+  var dd = document.createElement('div');
+  dd.className = 'tl-dd';
+  dd.textContent = item[3];
+  body.appendChild(tt);
+  body.appendChild(dd);
+  row.appendChild(dot);
+  row.appendChild(body);
+  cronCont.appendChild(row);
+});
+
+var faqData = [
+  ['Serei obrigado a virar estatutário?','Não. A migração é completamente voluntária. Cada servidor decide individualmente se quer migrar. Quem preferir continuar na CLT pode continuar sem nenhuma consequência para seu emprego ou direitos atuais.','Lei Federal nº 8.112/1990, arts. 241–243.'],
+  ['Vou perder o meu FGTS?','Não. Se optar pela migração, você saca todo o saldo acumulado na conta do FGTS por meio da rescisão instrumental do contrato CLT. Nenhum centavo é perdido. A administração está em tratativas com a CEF para formalizar o procedimento.','Rescisão instrumental — Lei nº 8.112/1990.'],
+  ['Meus direitos adquiridos serão respeitados?','Sim. Todo o tempo de serviço trabalhado é reconhecido integralmente. Você não faz novo estágio probatório nem perde nenhum direito já conquistado. Seu enquadramento no novo PCCV será no nível equivalente ao que já possui.','Art. 5º, XXXVI, CF/88. Lei nº 8.112/1990, art. 243.'],
+  ['A jornada de 6 horas continua garantida?','Sim. A jornada de 30h/semana foi instituída pelas LCs 3.231 e 3.242/2003, com irredutibilidade salarial garantida em lei. Pode ser integralmente mantida e incorporada ao novo estatuto.','LC nº 3.231/2003 e LC nº 3.242/2003 — Município de Cataguases.'],
+  ['A votação no poliesportivo (600 x 18) não encerrou o assunto?','A votação é uma manifestação política legítima e é reconhecida. Porém, ela não tem poder jurídico de revogar um TAC firmado com o Ministério Público nem de suspender obrigações constitucionais do município.','TAC — título executivo extrajudicial (Lei nº 7.347/1985, art. 5º, §6º).'],
+  ['Um PCCV melhor não substitui o estatuto?','Parcialmente. O PCCV pode replicar progressões e adicionais. Mas não consegue replicar a estabilidade constitucional automática do art. 41 da CF/88 nem proteger progressões futuras ainda não atingidas.','Art. 41, CF/88. Súmula nº 51 do TST.'],
+  ['O rendimento do FGTS sacado não é uma desvantagem?','É um ponto legítimo na direção contrária. O FGTS rende TR + 3% ao ano, historicamente abaixo da inflação. Com o saque, o servidor pode aplicar em renda fixa (100% CDI, ~11% a.a.), obtendo rendimento real muito superior.','Análise comparativa: TR + 3% (FGTS) vs CDI (renda fixa). Ver módulo 06.'],
+  ['O STF não decidiu que regime misto é permitido? Por que ainda mudar?','Sim, a ADI 2.135 (nov/2024) declarou constitucional o regime misto. Mas isso não extingue o TAC com o MP, nem sana as 17 irregularidades documentadas pela auditoria INTEC.','ADI 2.135 STF, novembro/2024. TAC com MP.'],
+  ['Quando o projeto chegará à Câmara?','Ainda não há data definida. O processo participativo com as comissões setoriais precisa ser concluído antes. Nenhum projeto foi protocolado na Câmara até esta data.','Fase 3 do cronograma — em andamento.'],
+  ['Por que o TAC nunca foi divulgado aos servidores?','A administração reconhece que o TAC deveria ter sido comunicado com mais transparência. Essa foi uma falha de comunicação. O compromisso é disponibilizá-lo publicamente com nota explicativa.','Compromisso — NT-SEMAD-001/2026.']
+];
+var faqCont = document.getElementById('faq-container');
+faqData.forEach(function(item, i) {
+  var wrap = document.createElement('div');
+  wrap.className = 'faq-item';
+  var q = document.createElement('div');
+  q.className = 'faq-q';
+  q.onclick = (function(idx){ return function(){ tfaq(idx); }; })(i);
+  var qt = document.createElement('div');
+  qt.className = 'faq-qt';
+  qt.textContent = item[0];
+  var ic = document.createElement('div');
+  ic.className = 'faq-ic';
+  ic.id = 'fi' + i;
+  ic.textContent = '+';
+  q.appendChild(qt);
+  q.appendChild(ic);
+  var a = document.createElement('div');
+  a.className = 'faq-a';
+  a.id = 'fa' + i;
+  var ap = document.createElement('p');
+  ap.textContent = item[1];
+  var ref = document.createElement('div');
+  ref.className = 'faq-ref';
+  ref.innerHTML = '<strong>Fundamento:</strong> ' + item[2];
+  a.appendChild(ap);
+  a.appendChild(ref);
+  wrap.appendChild(q);
+  wrap.appendChild(a);
+  faqCont.appendChild(wrap);
+});
+</script>

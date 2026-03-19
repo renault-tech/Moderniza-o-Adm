@@ -1,0 +1,54 @@
+/* base.css — reset, variáveis CSS e tipografia */
+
+:root {
+  /* Backgrounds */
+  --color-background-primary:   #ffffff;
+  --color-background-secondary: #f5f5f7;
+
+  /* Textos */
+  --color-text-primary:   #1d1d1f;
+  --color-text-secondary: #636366;
+
+  /* Bordas */
+  --color-border-tertiary:  #e5e5ea;
+  --color-border-secondary: #d1d1d6;
+
+  /* Info — azul */
+  --color-background-info: #EFF6FF;
+  --color-text-info:       #0C447C;
+  --color-border-info:     #B5D4F4;
+
+  /* Success — verde */
+  --color-background-success: #F0FDF4;
+  --color-text-success:       #27500A;
+  --color-border-success:     #C0DD97;
+
+  /* Warning — âmbar */
+  --color-background-warning: #FAEEDA;
+  --color-text-warning:       #633806;
+  --color-border-warning:     #F3D08F;
+
+  /* Danger — vermelho */
+  --color-background-danger: #FCEBEB;
+  --color-text-danger:       #A32D2D;
+  --color-border-danger:     #F5C3C3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+}
+
+.app {
+  display: flex;
+  min-height: 640px;
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--color-background-primary);
+}

@@ -1,0 +1,48 @@
+/* tables.css — tabelas comparativas */
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  table-layout: fixed;
+}
+
+.tbl th {
+  background: var(--color-background-secondary);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  padding: 9px 12px;
+  text-align: left;
+  border: 0.5px solid var(--color-border-tertiary);
+  font-size: 11px;
+}
+
+.tbl td {
+  padding: 9px 12px;
+  border: 0.5px solid var(--color-border-tertiary);
+  color: var(--color-text-primary);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.tbl tr:nth-child(even) td {
+  background: var(--color-background-secondary);
+}
+
+.tbl-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 0.5px solid var(--color-border-tertiary);
+}
+
+.tbl-wrap .tbl th,
+.tbl-wrap .tbl td {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.tbl-wrap .tbl th:first-child,
+.tbl-wrap .tbl td:first-child {
+  border-left: none;
+}
