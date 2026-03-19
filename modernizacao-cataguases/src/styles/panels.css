@@ -1,0 +1,91 @@
+/* panels.css — área principal e estrutura dos painéis */
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+  min-width: 0;
+  background: var(--color-background-secondary);
+}
+
+.pnl {
+  display: none;
+  flex-direction: column;
+}
+
+.pnl.on {
+  display: flex;
+}
+
+.phead {
+  background: var(--color-background-primary);
+  padding: 22px 28px 18px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+
+.phead-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.phead-num {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .02em;
+}
+
+.phead h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.phead p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.pbody {
+  padding: 22px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sec-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.g2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.g3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.g4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.divider {
+  height: 0.5px;
+  background: var(--color-border-tertiary);
+}
