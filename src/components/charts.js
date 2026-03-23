@@ -9,7 +9,7 @@ function buildBarras(container, valorBase, anos) {
   if (!valorBase) valorBase = FGTS_SIMULACAO.valorBase || 50000;
   if (!anos) anos = FGTS_SIMULACAO.anos || 10;
 
-  container.innerHTML = '';
+  while (container.firstChild) { container.removeChild(container.firstChild); }
   var maxVal = 0;
 
   FGTS_SIMULACAO.alternativas.forEach(function (alt) {

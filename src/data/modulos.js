@@ -158,6 +158,34 @@ var MODULOS = [
     chips: [
       { label: 'Módulo 12', cls: '', style: 'background:#F1EFE8;color:#444441' }
     ]
+  },
+  {
+    id: 12,
+    num: '13',
+    label: 'Mitos vs Fatos',
+    color: '#2d9d57',
+    badge: '8',
+    group: 'Contexto',
+    titulo: 'Mitos vs Fatos: o que é verdade na modernização',
+    subtitulo: 'Desmistificando as 8 afirmações mais comuns e equivocadas sobre o processo de modernização administrativa, com base legal e técnica.',
+    chips: [
+      { label: 'Módulo 13', cls: 'pill-g' },
+      { label: '8 mitos', cls: 'pill-r' }
+    ]
+  },
+  {
+    id: 13,
+    num: '14',
+    label: 'Impactos por setor',
+    color: '#bf8600',
+    badge: '5',
+    group: 'Contexto',
+    titulo: 'Impactos por secretaria e setor',
+    subtitulo: 'Como os 17 achados da auditoria INTEC e o processo de modernização afetam concretamente cada área da Prefeitura de Cataguases.',
+    chips: [
+      { label: 'Módulo 14', cls: 'pill-w' },
+      { label: '5 setores', cls: 'pill-b' }
+    ]
   }
 ];
 

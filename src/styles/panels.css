@@ -109,4 +109,18 @@
     align-items: center;
     justify-content: center;
   }
+
+  .phead {
+    padding: 16px 16px 14px;
+  }
+
+  .pbody {
+    padding: 16px;
+  }
+
+  .g2,
+  .g3,
+  .g4 {
+    grid-template-columns: 1fr;
+  }
 }

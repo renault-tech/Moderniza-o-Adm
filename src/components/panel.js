@@ -325,12 +325,55 @@ function render5() {
   buildBarras(barsCont, 50000, 10);
   rendSec.appendChild(barsCont);
 
+  var resultCard = mk('div', 'fgts-result');
+  rendSec.appendChild(resultCard);
+
+  function calcGanho(valorBase, anos) {
+    var taxaFgts = 0.03;
+    var taxaCdi = 0.11;
+    var fgts = valorBase * Math.pow(1 + taxaFgts, anos);
+    var cdi = valorBase * Math.pow(1 + taxaCdi, anos);
+    return { fgts: Math.floor(fgts), cdi: Math.floor(cdi), diff: Math.floor(cdi - fgts) };
+  }
+
+  function updateResultCard(valorBase, anos) {
+    while (resultCard.firstChild) { resultCard.removeChild(resultCard.firstChild); }
+    var g = calcGanho(valorBase, anos);
+    var row = mk('div', 'fgts-result-row');
+
+    var itemFgts = mk('div', 'fgts-result-item');
+    var lblFgts = mk('div', 'fgts-result-lbl', 'FGTS (TR + 3% a.a.)');
+    var valFgts = mk('div', 'fgts-result-val fgts-result-val--r', 'R$ ' + g.fgts.toLocaleString('pt-BR'));
+    itemFgts.appendChild(lblFgts);
+    itemFgts.appendChild(valFgts);
+
+    var itemCdi = mk('div', 'fgts-result-item');
+    var lblCdi = mk('div', 'fgts-result-lbl', '100% CDI (~11% a.a.)');
+    var valCdi = mk('div', 'fgts-result-val fgts-result-val--g', 'R$ ' + g.cdi.toLocaleString('pt-BR'));
+    itemCdi.appendChild(lblCdi);
+    itemCdi.appendChild(valCdi);
+
+    var itemDiff = mk('div', 'fgts-result-item fgts-result-item--hl');
+    var lblDiff = mk('div', 'fgts-result-lbl', 'Ganho adicional ao investir (CDI vs FGTS)');
+    var valDiff = mk('div', 'fgts-result-val fgts-result-val--g', '+ R$ ' + g.diff.toLocaleString('pt-BR'));
+    itemDiff.appendChild(lblDiff);
+    itemDiff.appendChild(valDiff);
+
+    row.appendChild(itemFgts);
+    row.appendChild(itemCdi);
+    row.appendChild(itemDiff);
+    resultCard.appendChild(row);
+  }
+
+  updateResultCard(50000, 10);
+
   function updateCalc() {
     var v = parseInt(input1.value, 10);
     var a = parseInt(input2.value, 10);
     lbl1.textContent = 'Saldo do FGTS: R$ ' + v.toLocaleString('pt-BR');
     lbl2.textContent = 'Prazo projetado: ' + a + (a === 1 ? ' ano' : ' anos');
     buildBarras(barsCont, v, a);
+    updateResultCard(v, a);
   }
 
   input1.oninput = updateCalc;
@@ -559,13 +602,98 @@ function render11() {
   return pnl;
 }
 
+function render12() {
+  var pnl = mk('div', 'pnl');
+  pnl.id = 'p12';
+  pnl.appendChild(mkPhead(MODULOS[12].chips, MODULOS[12].titulo, MODULOS[12].subtitulo));
+
+  var body = mk('div', 'pbody');
+
+  body.appendChild(mkCallout('Estas afirmações circulam entre servidores e na imprensa. Cada uma é analisada abaixo com base nos textos legais aplicáveis ao contexto de Cataguases.', 'i'));
+
+  MITOS.forEach(function (item, i) {
+    var card = mk('div', 'mito-card');
+
+    var mitoRow = mk('div', 'mito-row');
+    var mitoPill = mk('span', 'pill pill-r mito-pill', 'MITO ' + (i + 1));
+    var mitoTxt = mk('div', 'mito-txt', item.mito);
+    mitoRow.appendChild(mitoPill);
+    mitoRow.appendChild(mitoTxt);
+
+    var sep = mk('div', 'mito-sep');
+
+    var fatoRow = mk('div', 'mito-row');
+    var fatoPill = mk('span', 'pill pill-g mito-pill', 'FATO');
+    var fatoTxt = mk('div', 'mito-fato-txt', item.fato);
+    fatoRow.appendChild(fatoPill);
+    fatoRow.appendChild(fatoTxt);
+
+    var lei = mk('div', 'mito-lei', item.lei);
+
+    card.appendChild(mitoRow);
+    card.appendChild(sep);
+    card.appendChild(fatoRow);
+    card.appendChild(lei);
+    body.appendChild(card);
+  });
+
+  pnl.appendChild(body);
+  return pnl;
+}
+
+function render13() {
+  var pnl = mk('div', 'pnl');
+  pnl.id = 'p13';
+  pnl.appendChild(mkPhead(MODULOS[13].chips, MODULOS[13].titulo, MODULOS[13].subtitulo));
+
+  var body = mk('div', 'pbody');
+
+  body.appendChild(mkCallout('Todos os dados abaixo derivam diretamente dos 17 achados da auditoria INTEC 2024. Nenhum valor foi estimado ou projetado — referências ao número do achado permitem cruzamento com o Módulo 01.', 'i'));
+
+  SETORES.forEach(function (setor) {
+    var card = mk('div', 'setor-card');
+
+    var header = mk('div', 'setor-header');
+    var dot = mk('span', 'setor-dot');
+    dot.style.background = setor.cor;
+    var nome = mk('span', 'setor-nome', setor.nome);
+    header.appendChild(dot);
+    header.appendChild(nome);
+    card.appendChild(header);
+
+    var desc = mk('div', 'setor-desc', setor.descricao);
+    card.appendChild(desc);
+
+    var lista = mk('div', 'setor-lista');
+    setor.itens.forEach(function (item) {
+      var row = mk('div', 'setor-item setor-item--' + item.tipo);
+      var sym = mk('span', 'setor-sym');
+      sym.textContent = item.tipo === 's' ? '✓' : item.tipo === 'd' ? '!' : '▲';
+      var txt = mk('span', 'setor-item-txt', item.texto);
+      row.appendChild(sym);
+      row.appendChild(txt);
+      lista.appendChild(row);
+    });
+    card.appendChild(lista);
+
+    var refs = mk('div', 'setor-refs', setor.refs);
+    card.appendChild(refs);
+
+    body.appendChild(card);
+  });
+
+  pnl.appendChild(body);
+  return pnl;
+}
+
 /* ============================================================
    Navegação
    ============================================================ */
 
 var RENDERERS = [
   render0, render1, render2, render3, render4, render5,
-  render6, render7, render8, render9, render10, render11
+  render6, render7, render8, render9, render10, render11,
+  render12, render13
 ];
 
 /**

@@ -378,3 +378,213 @@
 .pill-b { background: #E6F1FB; color: #0C447C; }
 .pill-g { background: #EAF3DE; color: #27500A; }
 .pill-w { background: #FAEEDA; color: #633806; }
+
+/* --- Impactos por setor --- */
+.setor-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.setor-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.setor-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.setor-nome {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.setor-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.setor-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.setor-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.setor-item--d {
+  background: var(--color-background-danger);
+  color: var(--color-text-danger);
+}
+.setor-item--w {
+  background: var(--color-background-warning);
+  color: var(--color-text-warning);
+}
+.setor-item--s {
+  background: var(--color-background-success);
+  color: var(--color-text-success);
+}
+.setor-sym {
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.setor-item-txt {
+  flex: 1;
+}
+.setor-refs {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding-top: 4px;
+  border-top: 0.5px solid var(--color-border-tertiary);
+}
+
+/* --- Slider range --- */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--color-border-tertiary);
+  outline: none;
+  cursor: pointer;
+  margin: 8px 0;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0071e3;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0071e3;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+
+/* --- Card de resultado FGTS --- */
+.fgts-result {
+  margin-top: 16px;
+}
+.fgts-result-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.fgts-result-item {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.fgts-result-item--hl {
+  background: #F0FDF4;
+  border-color: #C0DD97;
+}
+.fgts-result-lbl {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.fgts-result-val {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.fgts-result-val--r { color: #e8453c; }
+.fgts-result-val--g { color: #2d9d57; }
+
+/* --- Mitos vs Fatos --- */
+.mito-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mito-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.mito-pill {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.mito-txt {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  font-style: italic;
+}
+.mito-sep {
+  height: 0.5px;
+  background: var(--color-border-tertiary);
+}
+.mito-fato-txt {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  font-weight: 500;
+}
+.mito-lei {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  padding: 6px 10px;
+  background: var(--color-background-secondary);
+  border-radius: 6px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  /* Achados: 1 coluna em mobile */
+  .achg {
+    grid-template-columns: 1fr;
+  }
+
+  /* Comparativo CLT vs Estatuto: 1 coluna em mobile */
+  .vs {
+    grid-template-columns: 1fr;
+  }
+
+  /* Gráfico de barras: label flexível */
+  .bar-lbl {
+    width: auto;
+    min-width: 80px;
+    max-width: 120px;
+  }
+
+  /* Card de resultado FGTS: 1 coluna em mobile */
+  .fgts-result-row {
+    grid-template-columns: 1fr;
+  }
+}
