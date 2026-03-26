@@ -5,6 +5,7 @@
   border-collapse: collapse;
   font-size: 12px;
   table-layout: fixed;
+  min-width: 500px;
 }
 
 .tbl th {

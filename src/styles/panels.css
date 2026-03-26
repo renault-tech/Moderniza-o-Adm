@@ -14,6 +14,12 @@
 
 .pnl.on {
   display: flex;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .phead {
@@ -56,6 +62,27 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-width: 0;
+}
+
+.print-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+.print-btn:hover {
+  color: var(--color-text-primary);
+}
+.print-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
 }
 
 .sec-label {

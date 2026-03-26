@@ -40,13 +40,16 @@ function buildFaq(container) {
     var a = mk('div', 'faq-a');
     a.id = 'fa' + i;
 
-    a.appendChild(mk('p', '', item.resposta));
+    var inner = mk('div', 'faq-a-inner');
+    inner.appendChild(mk('p', '', item.resposta));
 
     var ref = mk('div', 'faq-ref');
     var strong = mk('strong', '', 'Fundamento: ');
     ref.appendChild(strong);
     ref.appendChild(document.createTextNode(item.fundamento));
-    a.appendChild(ref);
+    inner.appendChild(ref);
+
+    a.appendChild(inner);
 
     wrap.appendChild(q);
     wrap.appendChild(a);
