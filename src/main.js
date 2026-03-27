@@ -16,4 +16,7 @@ window.addEventListener('load', function () {
 
   handleHash();
   window.addEventListener('hashchange', handleHash);
+
+  /* Sincronizar com Supabase após renderização inicial */
+  if (typeof syncFromSupabase === 'function') syncFromSupabase();
 });
