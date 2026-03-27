@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Supabase__list_projects",
+      "mcp__claude_ai_Supabase__execute_sql",
+      "mcp__claude_ai_Supabase__list_tables",
+      "mcp__claude_ai_Supabase__get_logs",
+      "mcp__claude_ai_Supabase__get_project",
+      "mcp__claude_ai_Supabase__get_advisors",
+      "mcp__claude_ai_Supabase__get_project_url",
+      "mcp__claude_ai_Supabase__get_publishable_keys",
+      "Bash(npx claude-code-templates@latest --agent development-team/fullstack-developer --skill development/code-reviewer,web-development/react-best-practices,development/senior-frontend,development/senior-backend,document-processing/docx,creative-design/ui-ux-pro-max,document-processing/xlsx,document-processing/pptx,creative-design/ui-design-system,creative-design/canvas-design,development/senior-fullstack,development/brainstorming 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\User\\\\Desktop\\\\Projetos\\\\Moderniza-o-Adm\" && npx claude-code-templates@latest --skill creative-design/ui-design-system,creative-design/canvas-design,development/senior-fullstack,development/brainstorming 2>&1)"
+    ]
+  }
+}
