@@ -48,6 +48,13 @@ function mkPhead(chips, titulo, subtitulo) {
   chips.forEach(function (c) {
     top.appendChild(mkPill(c.label, c.cls || '', c.style || null));
   });
+  
+  var printBtn = mk('button', 'print-btn');
+  printBtn.title = 'Imprimir este módulo';
+  printBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  printBtn.onclick = function () { window.print(); };
+  top.appendChild(printBtn);
+  
   phead.appendChild(top);
   phead.appendChild(mk('h2', '', titulo));
   if (subtitulo) phead.appendChild(mk('p', '', subtitulo));
@@ -124,4 +131,62 @@ function mkCard(titulo, descricao, borderColor, bgColor) {
   div.appendChild(mk('div', 'card-t', titulo));
   div.appendChild(mk('div', 'card-d', descricao));
   return div;
+}
+
+/**
+ * Remove acentos de uma string, transformando caracteres acentuados em suas versões não acentuadas.
+ * @param {string} str - string original
+ * @returns {string} string sem acentos
+ */
+function unaccent(str) {
+  if (!str) return '';
+  var mapa = {
+    'á':'a', 'à':'a', 'ã':'a', 'â':'a', 'ä':'a',
+    'é':'e', 'è':'e', 'ê':'e', 'ë':'e',
+    'í':'i', 'ì':'i', 'î':'i', 'ï':'i',
+    'ó':'o', 'ò':'o', 'õ':'o', 'ô':'o', 'ö':'o',
+    'ú':'u', 'ù':'u', 'û':'u', 'ü':'u',
+    'ç':'c', 'ñ':'n'
+  };
+  return str.replace(/[áàãâäéèêëíìîïóòõôöúùûüçñ]/g, function(match) { return mapa[match]; });
+}
+
+/**
+ * Envolve termos do glossário com spans interativos para os tooltips.
+ * @param {HTMLElement} container - O elemento root a ser escaneado.
+ */
+function applyGlossary(container) {
+  if (typeof GLOSSARIO === 'undefined') return;
+  
+  var terms = GLOSSARIO.slice().sort(function(a, b) { return b.termo.length - a.termo.length; });
+  
+  var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+  var nodes = [];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  
+  nodes.forEach(function(node) {
+    if (node.parentNode && (node.parentNode.tagName === 'A' || node.parentNode.tagName === 'H2' || node.parentNode.tagName === 'H3')) return;
+    if (node.parentNode && node.parentNode.classList.contains('tooltip')) return;
+
+    var text = node.nodeValue;
+    var replaced = false;
+    var newHtml = text;
+
+    terms.forEach(function(g) {
+      var regex = new RegExp('\\b(' + g.termo + ')\\b', 'gi');
+      if (regex.test(newHtml)) {
+        replaced = true;
+        newHtml = newHtml.replace(regex, '<span class="tooltip" data-tip="' + g.definicao + '">$1</span>');
+      }
+    });
+
+    if (replaced) {
+      var span = document.createElement('span');
+      span.innerHTML = newHtml;
+      while(span.firstChild) {
+        node.parentNode.insertBefore(span.firstChild, node);
+      }
+      node.parentNode.removeChild(node);
+    }
+  });
 }

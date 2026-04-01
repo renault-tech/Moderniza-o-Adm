@@ -101,24 +101,24 @@ modernizacao-cataguases/
 
 ### Bugs a corrigir
 
-- [ ] **BUG-001** · Sidebar não fecha em viewport estreito (mobile < 768px)
-- [ ] **BUG-002** · Scroll do painel principal não retorna ao topo ao trocar de módulo em alguns browsers
-- [ ] **BUG-003** · Tabela comparativa (módulo 05) ultrapassa o container em telas < 600px
-- [ ] **BUG-004** · FAQ: clique duplo rápido abre e fecha sem animação suave
+- [x] **BUG-001** · Sidebar não fecha em viewport estreito (mobile < 768px)
+- [x] **BUG-002** · Scroll do painel principal não retorna ao topo ao trocar de módulo em alguns browsers
+- [x] **BUG-003** · Tabela comparativa (módulo 05) ultrapassa o container em telas < 600px
+- [x] **BUG-004** · FAQ: clique duplo rápido abre e fecha sem animação suave
 
 ### Melhorias de funcionalidade
 
-- [ ] **FEAT-001** · Modo de apresentação: tela cheia com navegação por teclado (setas)
-- [ ] **FEAT-002** · Barra de busca global por palavra-chave
-- [ ] **FEAT-003** · Botão "imprimir este módulo" com CSS de impressão
-- [ ] **FEAT-004** · Compartilhamento de módulo por URL com hash (#modulo-06)
-- [ ] **FEAT-005** · Indicador de progresso: módulos já visitados (localStorage)
-- [ ] **FEAT-006** · Animação suave na troca de painéis (fade ou slide)
-- [ ] **FEAT-007** · Tooltip com definição rápida ao hover em termos jurídicos
-- [ ] **FEAT-008** · Modo de leitura simplificada para impressão/acessibilidade
-- [ ] **FEAT-009** · Calculadora interativa de FGTS (slider de saldo + anos)
+- [x] **FEAT-001** · Modo de apresentação: tela cheia com navegação por teclado (setas)
+- [x] **FEAT-002** · Barra de busca global por palavra-chave
+- [x] **FEAT-003** · Botão "imprimir este módulo" com CSS de impressão
+- [x] **FEAT-004** · Compartilhamento de módulo por URL com hash (#modulo-06)
+- [x] **FEAT-005** · Indicador de progresso: módulos já visitados (localStorage)
+- [x] **FEAT-006** · Animação suave na troca de painéis (fade ou slide)
+- [x] **FEAT-007** · Tooltip com definição rápida ao hover em termos jurídicos
+- [x] **FEAT-008** · Modo de leitura simplificada para impressão/acessibilidade
+- [x] **FEAT-009** · Calculadora interativa de FGTS (slider de saldo + anos)
 - [ ] **FEAT-010** · Gráfico de linha comparativo FGTS vs CDI interativo (Chart.js)
-- [ ] **FEAT-011** · Glossário lateral de termos jurídicos
+- [x] **FEAT-011** · Glossário lateral de termos jurídicos
 - [ ] **FEAT-012** · Exportar PDF do módulo atual
 
 ### Melhorias de conteúdo
@@ -134,8 +134,8 @@ modernizacao-cataguases/
 ### Melhorias de design
 
 - [ ] **DESIGN-001** · Responsividade completa para mobile (sidebar colapsável)
-- [ ] **DESIGN-002** · Suporte a dark mode via prefers-color-scheme
-- [ ] **DESIGN-003** · Micro-animações nos cards ao hover
+- [x] **DESIGN-002** · Suporte a dark mode e alinhamento com Styleguide Institucional
+- [x] **DESIGN-003** · Micro-animações nos cards ao hover
 - [ ] **DESIGN-004** · Skeleton loading nos painéis ao navegar
 - [ ] **DESIGN-005** · Aumentar contraste dos textos secundários (WCAG AA)
 

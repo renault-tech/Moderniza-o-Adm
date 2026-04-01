@@ -713,8 +713,25 @@ function go(idx, skipHash) {
   var pnl = document.getElementById('p' + idx);
   if (pnl) {
     pnl.classList.add('on');
-    document.querySelector('.main').scrollTop = 0;
+    setTimeout(function() {
+      var mainEl = document.querySelector('.main');
+      if (mainEl) mainEl.scrollTop = 0;
+    }, 0);
   }
+
+  // Update currentIdx globally for keyboard nav
+  window.currentIdx = idx;
+
+  // Track progress
+  try {
+    var visited = JSON.parse(localStorage.getItem('modulos_visitados') || '[]');
+    if (visited.indexOf(idx) === -1) {
+      visited.push(idx);
+      localStorage.setItem('modulos_visitados', JSON.stringify(visited));
+    }
+    // Update sidebar visually
+    if (sbItems[idx]) sbItems[idx].classList.add('visited');
+  } catch(e) {}
 
   if (!skipHash) {
     var newHash = 'modulo-' + (idx + 1);
@@ -742,4 +759,7 @@ function buildPanels() {
   RENDERERS.forEach(function (renderFn) {
     main.appendChild(renderFn());
   });
+  if (typeof applyGlossary === 'function') {
+    applyGlossary(main);
+  }
 }
