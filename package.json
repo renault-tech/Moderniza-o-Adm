@@ -1,0 +1,10 @@
+{
+  "name": "modernizacao-adm",
+  "version": "1.0.0",
+  "description": "Painel Interativo de Comunicação Institucional - Prefeitura de Cataguases",
+  "scripts": {
+    "serve": "npx serve . -p 3000 --no-clipboard",
+    "admin": "npx serve . -p 3001 --no-clipboard"
+  },
+  "private": true
+}

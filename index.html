@@ -19,6 +19,9 @@
     <main class="main" id="main" aria-label="Conteúdo do módulo"></main>
   </div>
 
+  <!-- SDK Supabase (UMD — expõe window.supabase) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.42.0/dist/umd/supabase.js"></script>
+
   <!-- Dados -->
   <script src="src/data/modulos.js"></script>
   <script src="src/data/achados.js"></script>
@@ -29,6 +32,8 @@
   <script src="src/data/comparativos.js"></script>
   <script src="src/data/mitos.js"></script>
   <script src="src/data/setores.js"></script>
+  <!-- Loader Supabase: sobrescreve os arrays acima com dados do banco -->
+  <script src="src/data/supabase-loader.js"></script>
 
   <!-- Utilitários e componentes -->
   <script src="src/components/utils.js"></script>
