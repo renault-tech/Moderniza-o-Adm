@@ -6,3 +6,20 @@ node_modules/
 .vscode/
 *.swp
 *.swo
+
+# Ferramentas de IA / IDE (configs locais de cada ferramenta)
+.agent/
+.agents/
+.claude/
+.codex/
+.cursor/
+.gemini/
+.github/
+.opencode/
+.planning/
+.windsurf/
+
+# Arquivos de instrução e inicialização de ferramentas externas
+AGENTS.md
+init.json
+init-map.json

@@ -114,6 +114,15 @@
   border-left-color: #0071e3;
 }
 
+.sb-item.visited::after {
+  content: '✓';
+  position: absolute;
+  right: 14px;
+  color: #2d9d57;
+  font-weight: 700;
+  font-size: 14px;
+}
+
 .sb-dot {
   width: 22px;
   height: 22px;
@@ -159,6 +168,25 @@
 .sb-foot p {
   font-size: 10px;
   color: #636366;
+}
+
+.sb-btn-fs {
+  width: 100%;
+  margin-top: 10px;
+  background: #2c2c2e;
+  color: #f5f5f7;
+  border: 1px solid #38383a;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sb-btn-fs:hover {
+  background: #38383a;
+  border-color: #48484a;
 }
 
 .sb-overlay {

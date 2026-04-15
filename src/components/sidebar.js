@@ -49,6 +49,12 @@ function buildSidebar() {
 
   /* Itens agrupados */
   var currentGroup = null;
+  
+  var visitedMods = [];
+  try {
+    visitedMods = JSON.parse(localStorage.getItem('modulos_visitados') || '[]');
+  } catch(e) {}
+
   MODULOS.forEach(function (mod, i) {
     if (mod.group !== currentGroup) {
       currentGroup = mod.group;
@@ -57,7 +63,8 @@ function buildSidebar() {
       groupElements.push({ name: currentGroup, el: grpEl, activeCount: 0 });
     }
 
-    var item = mk('div', 'sb-item' + (i === 0 ? ' on' : ''));
+    var isVisited = visitedMods.indexOf(i) !== -1;
+    var item = mk('div', 'sb-item' + (i === 0 ? ' on' : '') + (isVisited ? ' visited' : ''));
     item.setAttribute('role', 'button');
     item.setAttribute('aria-label', 'Módulo ' + mod.num + ': ' + mod.label);
 
@@ -82,13 +89,23 @@ function buildSidebar() {
 
   searchInput.oninput = function (e) {
     var term = e.target.value.toLowerCase();
+    var termClean = typeof unaccent !== 'undefined' ? unaccent(term) : term;
+    
     groupElements.forEach(function (g) { g.activeCount = 0; });
 
-    itemElements.forEach(function (it) {
+    itemElements.forEach(function (it, idx) {
       var match = true;
-      if (term) {
+      if (termClean) {
         var text = (it.mod.label + ' ' + (it.mod.titulo || '') + ' ' + (it.mod.subtitulo || '')).toLowerCase();
-        if (text.indexOf(term) === -1) match = false;
+        
+        var pnl = document.getElementById('p' + idx);
+        if (pnl) {
+          text += ' ' + (pnl.textContent || pnl.innerText).toLowerCase();
+        }
+
+        var textClean = typeof unaccent !== 'undefined' ? unaccent(text) : text;
+        
+        if (textClean.indexOf(termClean) === -1) match = false;
       }
       if (match) {
         it.el.style.display = 'flex';
@@ -111,6 +128,19 @@ function buildSidebar() {
   var p2 = mk('p', '', 'Março de 2026');
   p2.style.marginTop = '2px';
   foot.appendChild(p2);
+  
+  var btnFs = mk('button', 'sb-btn-fs', 'Modo Apresentação');
+  btnFs.onclick = function() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(function(e){});
+      btnFs.textContent = 'Sair da Apresentação';
+    } else {
+      document.exitFullscreen();
+      btnFs.textContent = 'Modo Apresentação';
+    }
+  };
+  foot.appendChild(btnFs);
+  
   sb.appendChild(foot);
 
   /* Overlay para mobile */
