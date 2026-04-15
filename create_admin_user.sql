@@ -1,14 +1,20 @@
 -- Criar usuário Admin no Supabase Auth via SQL
 -- Email: admin@cataguases.mg.gov.br
--- Senha: s0pr4d0r.pr3f
+-- Senha: informar fora do arquivo versionado.
+-- Antes de executar este script na mesma sessão SQL:
+-- SELECT set_config('app.admin_password', '<senha-forte-temporaria>', false);
 
 DO $$
 DECLARE
   new_user_id uuid := gen_random_uuid();
   admin_email text := 'admin@cataguases.mg.gov.br';
-  admin_password text := 's0pr4d0r.pr3f';
+  admin_password text := nullif(current_setting('app.admin_password', true), '');
   hashed_password text;
 BEGIN
+  IF admin_password IS NULL OR length(admin_password) < 12 THEN
+    RAISE EXCEPTION 'Defina app.admin_password com uma senha forte antes de executar este script.';
+  END IF;
+
   -- Verificar se o usuário já existe
   IF EXISTS (SELECT 1 FROM auth.users WHERE email = admin_email) THEN
     RAISE NOTICE 'O usuário % já existe.', admin_email;

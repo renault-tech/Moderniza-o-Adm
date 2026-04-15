@@ -7,7 +7,7 @@
 
 ## Visão geral
 
-Aplicação web interativa que consolida todas as informações do processo de modernização administrativa da Prefeitura Municipal de Cataguases. O sistema funciona como guia navegável com 12 módulos temáticos, destinado a servidores públicos, vereadores, imprensa e população em geral.
+Aplicação web interativa que consolida todas as informações do processo de modernização administrativa da Prefeitura Municipal de Cataguases. O sistema funciona como guia navegável com 14 módulos temáticos, destinado a servidores públicos, vereadores, imprensa e população em geral.
 
 O painel foi concebido para ser utilizado em:
 - Reuniões presenciais com servidores (projeção)
@@ -24,16 +24,18 @@ O painel foi concebido para ser utilizado em:
 |--------|-----------|
 | Frontend | HTML5 + CSS3 + JavaScript vanilla (ES5 compatível) |
 | Estilo | CSS customizado, design system Apple-inspired |
-| Dados | Arrays JavaScript estáticos (inline) |
-| Build | Nenhum (arquivo único, zero dependências) |
+| Dados | Arrays JavaScript estáticos em `src/data/` |
+| Build | Nenhum (portal público offline-first, zero dependências externas por padrão) |
 | Deploy | Qualquer servidor estático ou CDN |
 
 ---
 
 ## Estrutura do projeto
 
+> **Entrada oficial:** use o `index.html` da raiz deste repositório. A pasta `modernizacao-cataguases/` é um snapshot legado mantido apenas como referência histórica.
+
 ```
-modernizacao-cataguases/
+Moderniza-o-Adm/
 │
 ├── README.md                  ← este arquivo
 ├── CLAUDE.md                  ← instruções para o Claude Code
@@ -42,11 +44,15 @@ modernizacao-cataguases/
 ├── src/
 │   ├── data/
 │   │   ├── achados.js         ← 17 achados da auditoria INTEC
-│   │   ├── modulos.js         ← metadados dos 12 módulos
+│   │   ├── modulos.js         ← metadados dos 14 módulos
 │   │   ├── faq.js             ← perguntas frequentes e respostas
 │   │   ├── timeline.js        ← cronologia STF/TST/Cataguases
 │   │   ├── cronograma.js      ← 6 fases do processo
-│   │   └── comparativos.js    ← dados de CLT vs Estatuto e FGTS
+│   │   ├── comparativos.js    ← dados de CLT vs Estatuto e FGTS
+│   │   ├── glossario.js       ← termos jurídicos e administrativos
+│   │   ├── mitos.js           ← mitos e fatos do módulo 13
+│   │   ├── setores.js         ← impactos por área do módulo 14
+│   │   └── conteudo-modulos.js← dados auxiliares extraídos dos painéis
 │   │
 │   ├── components/
 │   │   ├── sidebar.js         ← componente de navegação lateral
@@ -94,6 +100,8 @@ modernizacao-cataguases/
 | 10 | STF e TST: cronologia | Estável | ADI 2.135, Lei 8.112/1990 |
 | 11 | Comissões e cronograma | Estável | Portaria 109/2026, 6 fases |
 | 12 | Perguntas frequentes | Estável | 10 FAQs com fundamento |
+| 13 | Mitos vs Fatos | Estável | 8 mitos com correção técnica |
+| 14 | Impactos por setor | Estável | 5 áreas da prefeitura |
 
 ---
 
@@ -117,14 +125,14 @@ modernizacao-cataguases/
 - [x] **FEAT-007** · Tooltip com definição rápida ao hover em termos jurídicos
 - [x] **FEAT-008** · Modo de leitura simplificada para impressão/acessibilidade
 - [x] **FEAT-009** · Calculadora interativa de FGTS (slider de saldo + anos)
-- [ ] **FEAT-010** · Gráfico de linha comparativo FGTS vs CDI interativo (Chart.js)
+- [ ] **FEAT-010** · Gráfico de linha comparativo FGTS vs CDI interativo (sem CDN; biblioteca local se necessária)
 - [x] **FEAT-011** · Glossário lateral de termos jurídicos
 - [ ] **FEAT-012** · Exportar PDF do módulo atual
 
 ### Melhorias de conteúdo
 
-- [ ] **CONT-001** · Adicionar módulo 13: Mitos e verdades (formato fact-check)
-- [ ] **CONT-002** · Adicionar módulo 14: O que muda para cada secretaria (por área)
+- [x] **CONT-001** · Adicionar módulo 13: Mitos e verdades (formato fact-check)
+- [x] **CONT-002** · Adicionar módulo 14: O que muda para cada secretaria (por área)
 - [ ] **CONT-003** · Atualizar Fase 3 do cronograma com data real quando disponível
 - [ ] **CONT-004** · Inserir logotipo oficial da Prefeitura de Cataguases no sidebar
 - [ ] **CONT-005** · Adicionar referências completas em formato ABNT no módulo de jurisprudência
@@ -133,7 +141,7 @@ modernizacao-cataguases/
 
 ### Melhorias de design
 
-- [ ] **DESIGN-001** · Responsividade completa para mobile (sidebar colapsável)
+- [x] **DESIGN-001** · Responsividade completa para mobile (sidebar colapsável)
 - [x] **DESIGN-002** · Suporte a dark mode e alinhamento com Styleguide Institucional
 - [x] **DESIGN-003** · Micro-animações nos cards ao hover
 - [ ] **DESIGN-004** · Skeleton loading nos painéis ao navegar
@@ -141,7 +149,7 @@ modernizacao-cataguases/
 
 ### Melhorias técnicas
 
-- [ ] **TECH-001** · Separar dados dos componentes (arquivos `src/data/*.js`)
+- [ ] **TECH-001** · Separar dados restantes dos componentes (arquivos `src/data/*.js`)
 - [ ] **TECH-002** · Criar build com Vite para bundle otimizado
 - [ ] **TECH-003** · Adicionar service worker para funcionamento offline
 - [ ] **TECH-004** · Implementar testes de acessibilidade (a11y)

@@ -77,7 +77,9 @@
 
         /* TOPBAR */
         .topbar { height: var(--topbar-h); background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; gap: 10px; flex-shrink: 0; }
+        .topbar-heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
         .topbar-title { font-size: 15px; font-weight: 700; flex-shrink: 0; }
+        .topbar-sub { font-size: 12px; color: var(--text-2); line-height: 1.35; }
         .topbar-count { font-size: 12px; color: var(--text-2); background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 20px; padding: 2px 9px; }
         .topbar-spacer { flex: 1; }
         .search-wrap { display: flex; align-items: center; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 0 10px; gap: 5px; }
@@ -85,6 +87,10 @@
         .search-wrap input:focus { outline: none; }
         .search-wrap input::placeholder { color: var(--text-2); }
         .search-icon { color: var(--text-2); font-size: 13px; }
+        .btn-secondary { background: var(--surface-2); color: var(--text); border: 0.5px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; transition: background 0.15s; }
+        .btn-secondary:hover { background: #e8e8ed; }
+        .btn-draft { color: #0c447c; border-color: #b5d4f4; background: #eff6ff; }
+        .btn-draft:hover { background: #e6f1fb; }
         .btn-new { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; transition: opacity 0.15s; }
         .btn-new:hover { opacity: 0.88; }
 
@@ -94,16 +100,52 @@
         .empty-state { text-align: center; padding: 60px 20px; color: var(--text-2); font-size: 13px; }
         .empty-icon { font-size: 28px; margin-bottom: 8px; }
 
+        /* PROCESSO / QUALIDADE */
+        .quality-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+        .quality-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 13px 14px; }
+        .quality-card.warn { border-color: #f0c36d; background: #fffaf0; }
+        .quality-card.danger { border-color: #ffd0cc; background: #fff6f5; }
+        .quality-label { font-size: 11px; color: var(--text-2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.45px; }
+        .quality-value { margin-top: 5px; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+        .quality-note { margin-top: 3px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
+        .process-panel { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+        .process-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 0.5px solid var(--border); }
+        .process-title { font-size: 13px; font-weight: 700; }
+        .process-sub { font-size: 12px; color: var(--text-2); }
+        .process-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
+        .process-step { padding: 12px 14px; border-right: 0.5px solid var(--border); }
+        .process-step:last-child { border-right: none; }
+        .process-step-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-2); font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+        .process-step-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+        .process-step-desc { font-size: 12px; color: var(--text-2); line-height: 1.45; }
+        .issue-panel { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
+        .issue-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+        .issue-list { display: flex; flex-direction: column; gap: 6px; }
+        .issue-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); border: 0.5px solid var(--border); }
+        .issue-row strong { font-size: 12px; }
+        .issue-row span { color: var(--text-2); font-size: 12px; flex: 1; }
+        .btn-review { padding: 5px 9px; border-radius: 7px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .filterbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+        .filter-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+        .filter-tab { border: 0.5px solid var(--border); background: var(--surface); color: var(--text-2); border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; }
+        .filter-tab.active { background: #e6f1fb; color: #0c447c; border-color: #b5d4f4; }
+        .filter-summary { color: var(--text-2); font-size: 12px; }
+
         /* TABLE */
-        .table-card { background: var(--surface); border-radius: 10px; border: 0.5px solid var(--border); overflow: hidden; }
+        .table-card { background: var(--surface); border-radius: 10px; border: 0.5px solid var(--border); overflow: auto; }
         table { width: 100%; border-collapse: collapse; }
-        thead { background: var(--surface-2); }
+        thead { background: var(--surface-2); position: sticky; top: 0; z-index: 1; }
         th { padding: 9px 14px; font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
         td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); vertical-align: middle; font-size: 13px; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: #fafafa; }
+        tr.row-warning td { background: #fffdf7; }
+        tr.row-warning:hover td { background: #fff8e1; }
+        tr.row-muted td { color: var(--text-2); }
         td.cell-id { color: var(--text-2); font-size: 12px; width: 40px; }
         td.cell-primary { font-weight: 500; }
+        .cell-subline { display: block; margin-top: 3px; font-size: 11px; color: var(--warning); font-weight: 500; }
+        .cell-subline-note { display: block; margin-top: 3px; font-size: 11px; color: var(--text-2); line-height: 1.45; }
         td.cell-actions { text-align: right; white-space: nowrap; }
 
         /* COLOR PICKER */
@@ -166,6 +208,27 @@
         .modal-close { width: 26px; height: 26px; border-radius: 50%; border: none; background: var(--surface-2); color: var(--text-2); cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; font-family: inherit; }
         .modal-close:hover { background: var(--border); }
         .modal-body { padding: 18px 22px; overflow-y: auto; flex: 1; }
+        .form-guide { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+        .form-guide-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+        .form-guide-list { display: flex; flex-direction: column; gap: 8px; }
+        .form-guide-item { display: flex; flex-direction: column; gap: 2px; }
+        .form-guide-label { font-size: 12px; font-weight: 700; color: var(--text); }
+        .form-guide-desc { font-size: 12px; color: var(--text-2); line-height: 1.45; }
+        .form-guide-note { margin-top: 10px; font-size: 12px; color: #0c447c; background: #eff6ff; border: 0.5px solid #b5d4f4; border-radius: 8px; padding: 8px 10px; line-height: 1.45; }
+        .module-impact { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+        .module-impact-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+        .module-impact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+        .module-impact-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 8px; padding: 10px 11px; min-width: 0; }
+        .module-impact-card.wide { grid-column: 1 / -1; }
+        .module-impact-k { font-size: 11px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.35px; margin-bottom: 4px; }
+        .module-impact-v { font-size: 12px; color: var(--text); line-height: 1.45; overflow-wrap: anywhere; }
+        .module-impact-note { margin-top: 9px; font-size: 12px; color: var(--text-2); line-height: 1.45; }
+        .module-mini-item { display: flex; align-items: center; gap: 9px; min-width: 0; }
+        .module-mini-dot { width: 22px; height: 22px; border-radius: 6px; color: white; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .module-mini-text { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+        .module-mini-label { font-size: 12px; font-weight: 600; color: var(--text); overflow-wrap: anywhere; }
+        .module-mini-group { font-size: 11px; color: var(--text-2); }
+        .module-mini-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px; border: 0.5px solid var(--border); background: var(--surface); color: var(--text-2); font-size: 11px; font-weight: 700; flex-shrink: 0; }
         .modal-footer { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
         .btn-cancel { padding: 8px 16px; background: var(--surface-2); color: var(--text); border: 0.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
         .btn-cancel:hover { background: #e8e8ed; }
@@ -205,6 +268,29 @@
         .toast-success::before { content: '✓'; color: #34c759; }
         .toast-error::before { content: '✕'; color: #ff453a; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 1180px) {
+            .quality-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .process-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .process-step:nth-child(2) { border-right: none; }
+            .topbar { flex-wrap: wrap; height: auto; min-height: var(--topbar-h); padding: 10px 16px; }
+            .topbar-spacer { display: none; }
+            .search-wrap { margin-left: auto; }
+        }
+
+        @media (max-width: 760px) {
+            #dashboard-section { flex-direction: column; height: auto; min-height: 100vh; overflow: visible; }
+            .sidebar { width: 100%; max-height: none; overflow: visible; }
+            .sidebar-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 8px; gap: 4px; }
+            .nav-section-label { grid-column: 1 / -1; padding: 8px; }
+            .content { padding: 14px; }
+            .quality-grid, .process-list { grid-template-columns: 1fr; }
+            .module-impact-grid { grid-template-columns: 1fr; }
+            .process-step, .process-step:nth-child(2) { border-right: none; border-bottom: 0.5px solid var(--border); }
+            .process-step:last-child { border-bottom: none; }
+            .filterbar { align-items: flex-start; flex-direction: column; }
+            .search-wrap, .search-wrap input, .btn-secondary, .btn-draft, .btn-new { width: 100%; }
+            .table-card { max-width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -225,13 +311,13 @@
         </div>
         <div class="field-group">
             <label class="field-label" for="email">E-mail</label>
-            <input class="field-input" type="email" id="email" placeholder="admin@cataguases.mg.gov.br">
+            <input class="field-input" type="email" id="email" placeholder="admin@cataguases.mg.gov.br" autocomplete="username">
         </div>
         <div class="field-group">
             <label class="field-label" for="password">Senha</label>
-            <input class="field-input" type="password" id="password" placeholder="••••••••">
+            <input class="field-input" type="password" id="password" autocomplete="current-password" placeholder="••••••••">
         </div>
-        <button class="btn-primary" id="btn-login" onclick="login()">Entrar no Painel</button>
+        <button class="btn-primary" id="btn-login" type="button" onclick="login()">Entrar no Painel</button>
         <div id="auth-error" class="error-box hidden"></div>
     </div>
 </div>
@@ -246,20 +332,25 @@
         <nav class="sidebar-nav" id="sidebar-nav"></nav>
         <div class="sidebar-footer">
             <div class="sidebar-user" id="sidebar-user"></div>
-            <button class="btn-logout" onclick="logout()">Sair da sessão</button>
+            <button class="btn-logout" type="button" onclick="logout()">Sair da sessão</button>
         </div>
     </aside>
 
     <div class="main">
         <div class="topbar">
-            <span class="topbar-title" id="topbar-title">—</span>
+            <div class="topbar-heading">
+                <span class="topbar-title" id="topbar-title">-</span>
+                <span class="topbar-sub" id="topbar-sub">Carregando orientações desta tabela...</span>
+            </div>
             <span class="topbar-count" id="topbar-count"></span>
             <div class="topbar-spacer"></div>
             <div class="search-wrap">
                 <span class="search-icon">&#9906;</span>
                 <input type="text" id="search-input" placeholder="Buscar..." oninput="filterTable(this.value)">
             </div>
-            <button class="btn-new" onclick="openNew()">+ Novo</button>
+            <button class="btn-secondary" type="button" onclick="refreshCurrentTable()">Atualizar</button>
+            <button class="btn-secondary btn-draft hidden" id="btn-draft" type="button" onclick="openNewDraft()">+ Rascunho</button>
+            <button class="btn-new" type="button" onclick="openNew()">+ Novo</button>
         </div>
         <div class="content" id="content"></div>
     </div>
@@ -270,12 +361,12 @@
     <div class="modal-panel">
         <div class="modal-header">
             <h3 id="modal-title">Editar</h3>
-            <button class="modal-close" onclick="closeModal()">&#215;</button>
+            <button class="modal-close" type="button" onclick="closeModal()">&#215;</button>
         </div>
         <div class="modal-body" id="modal-body"></div>
         <div class="modal-footer">
-            <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-            <button class="btn-save" id="btn-save" onclick="saveRecord()">Salvar</button>
+            <button class="btn-cancel" type="button" onclick="closeModal()">Cancelar</button>
+            <button class="btn-save" id="btn-save" type="button" onclick="saveRecord()">Salvar</button>
         </div>
     </div>
 </div>
@@ -299,8 +390,8 @@
             </div>
         </div>
         <div class="del-footer">
-            <button class="btn-del-cancel" onclick="closeDeleteModal()">Cancelar</button>
-            <button class="btn-del-confirm" id="btn-del-confirm" onclick="executeDelete()">Excluir permanentemente</button>
+            <button class="btn-del-cancel" type="button" onclick="closeDeleteModal()">Cancelar</button>
+            <button class="btn-del-confirm" id="btn-del-confirm" type="button" onclick="executeDelete()">Excluir permanentemente</button>
         </div>
     </div>
 </div>
@@ -316,9 +407,112 @@
     var currentId = null;
     var isNew = false;
     var tableData = [];
+    var currentQuickFilter = 'all';
+    var tableHasAtivo = {};
+
+    var EXPECTED_COUNTS = {
+        modulos: 14,
+        achados: 17,
+        faq: 10,
+        timeline: 9,
+        cronograma: 6,
+        mitos: 8,
+        setores: 5
+    };
+
+    var REQUIRED_FIELDS = {
+        modulos: ['num', 'label', 'group_name', 'titulo', 'subtitulo'],
+        achados: ['num', 'titulo', 'descricao', 'gravidade', 'lei'],
+        faq: ['pergunta', 'resposta', 'fundamento'],
+        timeline: ['status', 'data_evento', 'titulo', 'descricao'],
+        cronograma: ['status', 'data_fase', 'fase', 'titulo', 'descricao'],
+        mitos: ['mito', 'fato', 'lei'],
+        setores: ['nome', 'cor', 'descricao']
+    };
+
+    var TABLE_ORDER = {
+        modulos: 'num',
+        achados: 'id',
+        timeline: 'id',
+        cronograma: 'id',
+        faq: 'id',
+        mitos: 'id',
+        setores: 'id'
+    };
+
+    var VISIBILITY_FIELD = {
+        k:'ativo',
+        l:'Visibilidade',
+        h:'Publicado aparece nos fluxos que usam dados remotos; rascunho fica guardado para revisao.',
+        type:'radio',
+        opts:[
+            { value:'true', label:'Publicado', color:'success', hint:'Pode aparecer no portal quando houver sincronizacao remota' },
+            { value:'false', label:'Rascunho', color:'neutral', hint:'Mantem o registro no admin sem publicar' }
+        ]
+    };
+
+    var TABLE_HELP = {
+        modulos: {
+            summary: 'Numero define a ordem; grupo define o bloco visual; rotulo, badge e cor mudam a sidebar; titulo e subtitulo mudam o cabecalho do modulo.',
+            guide: [
+                ['Sidebar', 'Numero, rotulo, badge, grupo e cor mudam a lista lateral e a ordem de leitura.'],
+                ['Contexto duplicado', 'No dashboard, Contexto aparece duas vezes: no topo para modulos iniciais e no fim para modulos numerados depois de Jurisprudencia.'],
+                ['Cabecalho do modulo', 'Titulo e subtitulo mudam a abertura do painel publico.'],
+                ['Publicacao', 'Modulos em rascunho ficam guardados no admin e nao entram na sincronizacao remota.']
+            ]
+        },
+        achados: {
+            summary: 'Esses registros abastecem o diagnostico, os cards de achados e os recortes por setor.',
+            guide: [
+                ['Modulo 01', 'Numero, titulo e descricao aparecem na grade dos 17 achados.'],
+                ['Classificacao', 'A gravidade muda o tom visual e a leitura de risco.'],
+                ['Base legal', 'Lei e recomendacao sustentam o texto explicativo no admin e em revisoes.']
+            ]
+        },
+        faq: {
+            summary: 'Pergunta, resposta e fundamento entram direto no modulo de perguntas frequentes.',
+            guide: [
+                ['Pergunta', 'Aparece como titulo expansivel no FAQ publico.'],
+                ['Resposta', 'Abre no corpo da resposta para o servidor.'],
+                ['Fundamento', 'Fica visivel como referencia legal abaixo da resposta.']
+            ]
+        },
+        timeline: {
+            summary: 'Cada evento aparece na cronologia juridica com status, data e destaque.',
+            guide: [
+                ['Linha do tempo', 'Titulo e descricao alimentam o texto principal do evento.'],
+                ['Status', 'Concluido, atual ou futuro muda cor e leitura do marco.'],
+                ['Badge e referencia', 'Servem de apoio visual e juridico para o evento.']
+            ]
+        },
+        cronograma: {
+            summary: 'As fases aparecem no modulo de comissoes e cronograma do portal.',
+            guide: [
+                ['Fase e data', 'Orientam a ordem e o prazo de cada etapa.'],
+                ['Titulo', 'Resume o foco da fase para o leitor.'],
+                ['Descricao', 'Explica o que acontece nessa etapa do processo.']
+            ]
+        },
+        mitos: {
+            summary: 'Cada item vira um bloco de mito e fato no portal publico.',
+            guide: [
+                ['Mito', 'Abre a afirmacao incorreta que circula entre servidores.'],
+                ['Fato', 'Entrega a correcao oficial em destaque.'],
+                ['Lei', 'Fica como ancora juridica do argumento.']
+            ]
+        },
+        setores: {
+            summary: 'Esses registros montam o modulo de impactos por secretaria e setor.',
+            guide: [
+                ['Nome e cor', 'Definem identidade visual e cabecalho do card.'],
+                ['Descricao', 'Explica quem e afetado naquele recorte.'],
+                ['Referencias', 'Ligam o card aos achados e fundamentacoes correspondentes.']
+            ]
+        }
+    };
 
     var TABLE_CONFIG = {
-        modulos:   { icon: '▦', label: 'Módulos',    cols: [{k:'num',l:'#',w:'44px'},{k:'label',l:'Rótulo',p:true},{k:'group_name',l:'Grupo'},{k:'badge',l:'Badge',chip:'neutral'}] },
+        modulos:   { icon: '▦', label: 'Módulos',    cols: [{k:'num',l:'#',w:'44px'},{k:'label',l:'Rótulo',p:true},{k:'group_name',l:'Grupo'},{k:'_impacto',l:'Destino no dashboard',trunc:68},{k:'badge',l:'Badge',chip:'neutral'}] },
         achados:   { icon: '⚑', label: 'Achados',    cols: [{k:'num',l:'#',w:'44px'},{k:'titulo',l:'Título',p:true},{k:'gravidade',l:'Gravidade',chip:'gravidade'},{k:'lei',l:'Lei',trunc:40}] },
         faq:       { icon: '?', label: 'FAQ',         cols: [{k:'pergunta',l:'Pergunta',p:true,trunc:72},{k:'fundamento',l:'Fundamento',trunc:48}] },
         timeline:  { icon: '◉', label: 'Timeline',   cols: [{k:'data_evento',l:'Data',w:'110px'},{k:'titulo',l:'Título',p:true},{k:'status',l:'Status',chip:'status'},{k:'badge',l:'Badge'}] },
@@ -333,7 +527,7 @@
             { k:'label',      l:'Rótulo',             h:'Nome curto na lista lateral — máx. ~30 caracteres' },
             { k:'color',      l:'Cor do módulo',      h:'Cor do círculo e do cabeçalho. Cores padrão: #e8453c #0071e3 #6e6ce3 #2d9d57 #bf8600 #636366', type:'color' },
             { k:'badge',      l:'Badge (contador)',   h:'Número pequeno à direita do rótulo na sidebar. Ex: 17, 8, 5. Deixe vazio para não exibir.' },
-            { k:'group_name', l:'Grupo / Seção',      h:'Agrupa módulos na sidebar. Escolha uma das opções.', type:'select', opts:['Contexto','Regimes jurídicos','Direitos e carreira','Jurisprudência'] },
+            { k:'group_name', l:'Grupo / Seção',      h:'Agrupa módulos na sidebar. O bloco visível também depende do Número: 01-02 ficam no Contexto inicial; 13+ voltam como Contexto final.', type:'select', opts:['Contexto','Regimes jurídicos','Direitos e carreira','Jurisprudência'] },
             { k:'titulo',     l:'Título completo',    h:'Título longo exibido no cabeçalho do painel' },
             { k:'subtitulo',  l:'Subtítulo',          h:'Parágrafo introdutório visível ao abrir o módulo', ta:true }
         ],
@@ -393,7 +587,7 @@
     function init() {
         if (typeof window.supabase === 'undefined') {
             var el = document.getElementById('loading-init');
-            el.innerHTML = '';
+            clearNode(el);
             var p = document.createElement('p');
             p.style.color = '#e8453c';
             p.textContent = 'Erro: SDK Supabase não carregou. Verifique a conexão.';
@@ -463,7 +657,7 @@
 
     function buildSidebar() {
         var nav = document.getElementById('sidebar-nav');
-        nav.innerHTML = '';
+        clearNode(nav);
         var section = document.createElement('div');
         section.className = 'nav-section-label';
         section.textContent = 'Tabelas';
@@ -506,17 +700,442 @@
     }
 
     /* ── TABLE ── */
-    function loadTable(name) {
+    function el(tag, cls, text) {
+        var node = document.createElement(tag);
+        if (cls) node.className = cls;
+        if (text !== undefined) node.textContent = text;
+        return node;
+    }
+
+    function clearNode(node) {
+        while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function isBlank(value) {
+        return value === null || value === undefined || String(value).trim() === '';
+    }
+
+    function tableSupportsAtivo() {
+        return !!tableHasAtivo[currentTable];
+    }
+
+    function isInactiveRecord(item) {
+        if (!item || !tableSupportsAtivo()) return false;
+        return item.ativo === false || item.ativo === 'false' || item.ativo === 0 || item.ativo === '0';
+    }
+
+    function getSchemaForCurrentTable() {
+        var schema = (SCHEMA[currentTable] || []).slice();
+        if (tableSupportsAtivo()) schema.push(VISIBILITY_FIELD);
+        return schema;
+    }
+
+    function getRecordTitle(item) {
+        if (!item) return 'Registro';
+        return item.label || item.titulo || item.pergunta || item.mito || item.nome || item.fase || ('ID ' + item.id);
+    }
+
+    function getRecordIssues(item) {
+        var issues = [];
+        var fields = REQUIRED_FIELDS[currentTable] || [];
+        var missing = [];
+        var i;
+
+        for (i = 0; i < fields.length; i++) {
+            if (isBlank(item[fields[i]])) missing.push(fields[i]);
+        }
+        if (isInactiveRecord(item)) return issues;
+        if (missing.length) issues.push('Campos incompletos: ' + missing.join(', '));
+
+        if (currentTable === 'modulos') {
+            var expected = EXPECTED_COUNTS.modulos;
+            var num = parseInt(item.num, 10);
+            var text = (String(item.label || '') + ' ' + String(item.titulo || '')).toLowerCase();
+            if (!isNaN(num) && expected && num > expected) {
+                issues.push('Modulo acima do total esperado (' + expected + ')');
+            }
+            if (text.indexOf('teste') !== -1 || text.indexOf('rascunho') !== -1 || text.indexOf('demo') !== -1) {
+                issues.push('Registro parece teste/rascunho');
+            }
+        }
+
+        return issues;
+    }
+
+    function getIssueRecords(data) {
+        var records = [];
+        var i;
+        for (i = 0; i < data.length; i++) {
+            var issues = getRecordIssues(data[i]);
+            if (issues.length) records.push({ item: data[i], issues: issues });
+        }
+        return records;
+    }
+
+    function countActiveRecords(data) {
+        if (!tableSupportsAtivo()) return data.length;
+        var total = 0;
+        var i;
+        for (i = 0; i < data.length; i++) {
+            if (!isInactiveRecord(data[i])) total++;
+        }
+        return total;
+    }
+
+    function buildQualityCard(label, value, note, tone) {
+        var card = el('div', 'quality-card' + (tone ? ' ' + tone : ''));
+        card.appendChild(el('div', 'quality-label', label));
+        card.appendChild(el('div', 'quality-value', value));
+        card.appendChild(el('div', 'quality-note', note));
+        return card;
+    }
+
+    function buildQualityGrid(allData) {
+        var expected = EXPECTED_COUNTS[currentTable] || null;
+        var issues = getIssueRecords(allData);
+        var active = countActiveRecords(allData);
+        var inactive = tableSupportsAtivo() ? (allData.length - active) : 0;
+        var grid = el('div', 'quality-grid');
+        var countNote = expected ? expected + ' esperado(s)' : 'Registros carregados';
+        var countTone = expected && active !== expected ? 'warn' : '';
+        var issueTone = issues.length ? 'danger' : '';
+
+        grid.appendChild(buildQualityCard('Total', String(allData.length), countNote, countTone));
+        grid.appendChild(buildQualityCard(tableSupportsAtivo() ? 'Publicados' : 'Ativos', String(active), tableSupportsAtivo() ? inactive + ' rascunho(s)' : 'Sem controle de rascunho', ''));
+        grid.appendChild(buildQualityCard('Pendencias', String(issues.length), issues.length ? 'Clique em Pendencias para revisar' : 'Tudo certo nesta tabela', issueTone));
+        grid.appendChild(buildQualityCard('Resultado', expected && active === expected && !issues.length ? 'OK' : 'Revisar', expected ? 'Meta: ' + expected + ' publicado(s)' : 'Validacao automatica', expected && active === expected && !issues.length ? '' : 'warn'));
+        return grid;
+    }
+
+    function updateTopbarHelp() {
+        var help = TABLE_HELP[currentTable] || null;
+        var sub = document.getElementById('topbar-sub');
+        if (!sub) return;
+        if (currentTable === 'modulos' && !tableSupportsAtivo()) {
+            sub.textContent = 'Numero define a ordem, grupo define o bloco e Contexto pode aparecer no topo ou no final do dashboard conforme a posicao do modulo.';
+            return;
+        }
+        sub.textContent = help ? help.summary : 'Edite os registros e confira o reflexo no portal publico.';
+    }
+
+    function updateActionButtons() {
+        var draftBtn = document.getElementById('btn-draft');
+        if (!draftBtn) return;
+        if (currentTable === 'modulos' && tableSupportsAtivo()) {
+            draftBtn.classList.remove('hidden');
+        } else {
+            draftBtn.classList.add('hidden');
+        }
+    }
+
+    function buildFormGuide() {
+        var help = TABLE_HELP[currentTable];
+        if (!help || !help.guide || !help.guide.length) return null;
+
+        var panel = el('div', 'form-guide');
+        panel.appendChild(el('div', 'form-guide-title', 'Onde essa edicao aparece'));
+        var list = el('div', 'form-guide-list');
+        var i;
+
+        for (i = 0; i < help.guide.length; i++) {
+            var row = el('div', 'form-guide-item');
+            row.appendChild(el('div', 'form-guide-label', help.guide[i][0]));
+            row.appendChild(el('div', 'form-guide-desc', help.guide[i][1]));
+            list.appendChild(row);
+        }
+
+        panel.appendChild(list);
+
+        if (currentTable === 'modulos') {
+            if (tableSupportsAtivo()) {
+                panel.appendChild(el('div', 'form-guide-note', 'A prévia abaixo mostra o bloco exato da sidebar e o cabeçalho afetado. Modulo extra? Use + Rascunho para preparar o conteudo sem publicar no portal.'));
+            } else {
+                panel.appendChild(el('div', 'form-guide-note', 'A prévia abaixo mostra o bloco exato da sidebar e o cabeçalho afetado. Quando a coluna ativo estiver disponivel, voce podera guardar modulos extras como rascunho sem publicar.'));
+            }
+        }
+
+        return panel;
+    }
+
+    function getModuleSectionText(item) {
+        var group = String((item && (item.group_name || item.group)) || '').trim();
+        var num = parseInt(item && item.num, 10);
+
+        if (!group) return 'Sem grupo definido';
+        if (group === 'Contexto') {
+            if (!isNaN(num) && num >= 13) return 'Contexto final · bloco abaixo de Jurisprudência';
+            return 'Contexto inicial · bloco do topo da sidebar';
+        }
+        if (group === 'Regimes jurídicos') return 'Regimes jurídicos · bloco entre Contexto e Direitos e carreira';
+        if (group === 'Direitos e carreira') return 'Direitos e carreira · bloco central da sidebar';
+        if (group === 'Jurisprudência') return 'Jurisprudência · bloco antes do Contexto final';
+        return group;
+    }
+
+    function getModuleOrderText(item) {
+        var num = parseInt(item && item.num, 10);
+        var rows = [];
+        var i;
+
+        if (isNaN(num)) return 'Defina o Número para posicionar o módulo na ordem da sidebar.';
+
+        for (i = 0; i < tableData.length; i++) {
+            if (item && item.id != null && tableData[i].id === item.id) continue;
+            rows.push(tableData[i]);
+        }
+
+        rows.sort(function(a, b) {
+            return parseInt(a.num, 10) - parseInt(b.num, 10);
+        });
+
+        var prev = null;
+        var next = null;
+        for (i = 0; i < rows.length; i++) {
+            var rowNum = parseInt(rows[i].num, 10);
+            if (isNaN(rowNum)) continue;
+            if (rowNum < num) prev = rows[i];
+            if (rowNum > num) {
+                next = rows[i];
+                break;
+            }
+        }
+
+        if (!prev && !next) return 'Será o primeiro módulo da sidebar.';
+        if (!prev) return 'Vai para o topo da sidebar, antes de Módulo ' + next.num + ' · ' + next.label + '.';
+        if (!next) return 'Vai para o final da sidebar, depois de Módulo ' + prev.num + ' · ' + prev.label + '.';
+        return 'Fica entre Módulo ' + prev.num + ' · ' + prev.label + ' e Módulo ' + next.num + ' · ' + next.label + '.';
+    }
+
+    function getModuleDashboardNote(item) {
+        var group = String((item && item.group_name) || '').trim();
+        var num = parseInt(item && item.num, 10);
+
+        if (!group) return 'Escolha o grupo para saber em qual bloco do dashboard este módulo entra.';
+        if (group === 'Contexto' && !isNaN(num) && num >= 13) {
+            return 'Mesmo com o nome Contexto, este módulo aparece no bloco final do dashboard porque sua ordem vem depois de Jurisprudência.';
+        }
+        if (group === 'Contexto') {
+            return 'Este módulo entra no primeiro bloco do dashboard, no topo da navegação.';
+        }
+        return 'O dashboard usa o Grupo para montar os blocos visuais e o Número para encaixar a ordem dentro deles.';
+    }
+
+    function getModuleImpactText(item) {
+        return getModuleSectionText(item) + ' · ' + getModuleOrderText(item);
+    }
+
+    function getModulePreviewState(baseItem) {
+        var state = {};
+        var fields = ['num', 'label', 'color', 'badge', 'group_name', 'titulo', 'subtitulo', 'ativo'];
+        var i;
+
+        for (i = 0; i < fields.length; i++) {
+            var field = document.getElementById('f_' + fields[i]);
+            if (field) {
+                state[fields[i]] = field.value;
+            } else if (baseItem && baseItem[fields[i]] != null) {
+                state[fields[i]] = baseItem[fields[i]];
+            } else {
+                state[fields[i]] = '';
+            }
+        }
+
+        if (baseItem && baseItem.id != null) state.id = baseItem.id;
+        return state;
+    }
+
+    function buildImpactInfoCard(label, value, wide) {
+        var card = el('div', 'module-impact-card' + (wide ? ' wide' : ''));
+        card.appendChild(el('div', 'module-impact-k', label));
+        card.appendChild(el('div', 'module-impact-v', value));
+        return card;
+    }
+
+    function renderModuleImpactPreview(container, baseItem) {
+        var item = getModulePreviewState(baseItem);
+        clearNode(container);
+
+        var title = el('div', 'module-impact-title', 'Prévia do destino no dashboard');
+        var grid = el('div', 'module-impact-grid');
+
+        grid.appendChild(buildImpactInfoCard('Bloco da sidebar', getModuleSectionText(item), false));
+        grid.appendChild(buildImpactInfoCard('Posição', getModuleOrderText(item), false));
+
+        var sidebarCard = el('div', 'module-impact-card wide');
+        sidebarCard.appendChild(el('div', 'module-impact-k', 'Item lateral que será alterado'));
+        var itemRow = el('div', 'module-mini-item');
+        var dot = el('div', 'module-mini-dot', item.num || '--');
+        dot.style.background = item.color || '#0071e3';
+        itemRow.appendChild(dot);
+        var txt = el('div', 'module-mini-text');
+        txt.appendChild(el('div', 'module-mini-label', item.label || 'Rótulo do módulo'));
+        txt.appendChild(el('div', 'module-mini-group', getModuleSectionText(item)));
+        itemRow.appendChild(txt);
+        if (item.badge) itemRow.appendChild(el('span', 'module-mini-badge', item.badge));
+        sidebarCard.appendChild(itemRow);
+        grid.appendChild(sidebarCard);
+
+        var headCard = el('div', 'module-impact-card wide');
+        headCard.appendChild(el('div', 'module-impact-k', 'Cabeçalho do painel'));
+        headCard.appendChild(el('div', 'module-impact-v', (item.titulo || 'Título completo do módulo')));
+        headCard.appendChild(el('div', 'module-impact-note', item.subtitulo || 'O subtítulo aparece logo abaixo do título ao abrir o módulo.'));
+        grid.appendChild(headCard);
+
+        container.appendChild(title);
+        container.appendChild(grid);
+        container.appendChild(el('div', 'module-impact-note', getModuleDashboardNote(item)));
+    }
+
+    function bindModuleImpactPreview(container, baseItem) {
+        var fields = ['num', 'label', 'color', 'badge', 'group_name', 'titulo', 'subtitulo'];
+        var i;
+        var refresh = function() {
+            renderModuleImpactPreview(container, baseItem);
+        };
+
+        for (i = 0; i < fields.length; i++) {
+            var field = document.getElementById('f_' + fields[i]);
+            if (!field) continue;
+            field.oninput = refresh;
+            field.onchange = refresh;
+        }
+
+        refresh();
+    }
+
+    function buildProcessPanel(issueCount) {
+        var panel = el('div', 'process-panel');
+        var head = el('div', 'process-head');
+        var left = el('div');
+        left.appendChild(el('div', 'process-title', 'Fluxo recomendado'));
+        left.appendChild(el('div', 'process-sub', issueCount ? issueCount + ' ponto(s) pedem revisao antes de publicar' : 'Sem bloqueios automaticos nesta tabela'));
+        head.appendChild(left);
+        panel.appendChild(head);
+
+        var list = el('div', 'process-list');
+        var steps = [
+            ['1', 'Revisar', 'Conferir totais, duplicados e campos obrigatorios.'],
+            ['2', 'Corrigir', 'Editar registros com pendencias antes de validar.'],
+            ['3', 'Publicar', 'Usar rascunho para guardar itens que nao devem aparecer.'],
+            ['4', 'Conferir', 'Abrir o portal publico e validar o resultado final.']
+        ];
+        var i;
+        for (i = 0; i < steps.length; i++) {
+            var step = el('div', 'process-step');
+            step.appendChild(el('span', 'process-step-num', steps[i][0]));
+            step.appendChild(el('div', 'process-step-title', steps[i][1]));
+            step.appendChild(el('div', 'process-step-desc', steps[i][2]));
+            list.appendChild(step);
+        }
+        panel.appendChild(list);
+        return panel;
+    }
+
+    function buildIssuePanel(issueRecords) {
+        if (!issueRecords.length) return null;
+        var panel = el('div', 'issue-panel');
+        panel.appendChild(el('div', 'issue-title', 'Itens que merecem revisao'));
+        var list = el('div', 'issue-list');
+        var limit = Math.min(issueRecords.length, 5);
+        var i;
+        for (i = 0; i < limit; i++) {
+            var rec = issueRecords[i];
+            var row = el('div', 'issue-row');
+            row.appendChild(el('strong', '', getRecordTitle(rec.item)));
+            row.appendChild(el('span', '', rec.issues.join(' | ')));
+            var btn = el('button', 'btn-review', 'Editar');
+            btn.type = 'button';
+            btn.onclick = (function(item) { return function() { openEdit(item); }; })(rec.item);
+            row.appendChild(btn);
+            list.appendChild(row);
+        }
+        if (issueRecords.length > limit) {
+            list.appendChild(el('div', 'filter-summary', 'Mais ' + (issueRecords.length - limit) + ' item(ns) com pendencia. Use o filtro Pendencias.'));
+        }
+        panel.appendChild(list);
+        return panel;
+    }
+
+    function setQuickFilter(filterName) {
+        currentQuickFilter = filterName || 'all';
+        renderCurrentTable();
+    }
+
+    function buildFilterButton(filterName, label, count) {
+        var btn = el('button', 'filter-tab' + (currentQuickFilter === filterName ? ' active' : ''), label + ' ' + count);
+        btn.type = 'button';
+        btn.onclick = function() { setQuickFilter(filterName); };
+        return btn;
+    }
+
+    function buildFilterBar(allData, visibleData) {
+        var bar = el('div', 'filterbar');
+        var tabs = el('div', 'filter-tabs');
+        var issues = getIssueRecords(allData);
+        var inactive = allData.length - countActiveRecords(allData);
+        tabs.appendChild(buildFilterButton('all', 'Todos', allData.length));
+        tabs.appendChild(buildFilterButton('issues', 'Pendencias', issues.length));
+        if (tableSupportsAtivo()) tabs.appendChild(buildFilterButton('inactive', 'Rascunhos', inactive));
+        bar.appendChild(tabs);
+        bar.appendChild(el('div', 'filter-summary', visibleData.length + ' resultado(s) exibido(s)'));
+        return bar;
+    }
+
+    function recordMatchesSearch(item, query) {
+        if (!query) return true;
+        var keys = Object.keys(item);
+        var i;
+        for (i = 0; i < keys.length; i++) {
+            if (item[keys[i]] != null && String(item[keys[i]]).toLowerCase().indexOf(query) !== -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function applyTableFilters(data) {
+        var input = document.getElementById('search-input');
+        var query = input ? String(input.value || '').toLowerCase().trim() : '';
+        var result = [];
+        var i;
+        for (i = 0; i < data.length; i++) {
+            if (currentQuickFilter === 'issues' && getRecordIssues(data[i]).length === 0) continue;
+            if (currentQuickFilter === 'inactive' && !isInactiveRecord(data[i])) continue;
+            if (!recordMatchesSearch(data[i], query)) continue;
+            result.push(data[i]);
+        }
+        return result;
+    }
+
+    function renderCurrentTable() {
+        renderTableData(applyTableFilters(tableData), tableData);
+    }
+
+    function refreshCurrentTable() {
+        loadTable(currentTable, true);
+        loadCounts();
+    }
+
+    function loadTable(name, keepFilters) {
         currentTable = name;
-        document.getElementById('search-input').value = '';
-        document.querySelectorAll('.nav-item').forEach(function(el) { el.classList.remove('active'); });
+        if (!keepFilters) {
+            currentQuickFilter = 'all';
+            document.getElementById('search-input').value = '';
+        }
+        var navItems = document.querySelectorAll('.nav-item');
+        var ni;
+        for (ni = 0; ni < navItems.length; ni++) {
+            navItems[ni].classList.remove('active');
+        }
         var nav = document.getElementById('nav-' + name);
         if (nav) nav.classList.add('active');
         document.getElementById('topbar-title').textContent = TABLE_CONFIG[name].label;
         document.getElementById('topbar-count').textContent = '';
+        updateTopbarHelp();
+        updateActionButtons();
 
         var content = document.getElementById('content');
-        content.innerHTML = '';
+        clearNode(content);
         var loading = document.createElement('div');
         loading.className = 'content-loading';
         var sp = document.createElement('div');
@@ -524,9 +1143,9 @@
         loading.appendChild(sp);
         content.appendChild(loading);
 
-        client.from(name).select('*').order('id').then(function(res) {
+        client.from(name).select('*').order(TABLE_ORDER[name] || 'id').then(function(res) {
             if (res.error) {
-                content.innerHTML = '';
+                clearNode(content);
                 var err = document.createElement('div');
                 err.className = 'error-box';
                 err.textContent = 'Erro: ' + res.error.message;
@@ -534,15 +1153,34 @@
                 return;
             }
             tableData = res.data || [];
+            tableHasAtivo[name] = tableData.length > 0 && Object.prototype.hasOwnProperty.call(tableData[0], 'ativo');
+            updateTopbarHelp();
+            updateActionButtons();
             var cnt = tableData.length;
-            document.getElementById('topbar-count').textContent = cnt + ' registro' + (cnt !== 1 ? 's' : '');
-            renderTableData(tableData);
+            var expected = EXPECTED_COUNTS[name] || null;
+            document.getElementById('topbar-count').textContent = cnt + ' registro' + (cnt !== 1 ? 's' : '') + (expected ? ' / ' + expected + ' esperados' : '');
+            renderCurrentTable();
         });
     }
 
-    function renderTableData(data) {
+    function getVisibleColumns() {
+        var cfg = TABLE_CONFIG[currentTable];
+        var cols = cfg.cols.slice();
+        if (tableSupportsAtivo()) cols.push({k:'ativo', l:'Status', chip:'ativo'});
+        return cols;
+    }
+
+    function renderTableData(data, allData) {
         var content = document.getElementById('content');
-        content.innerHTML = '';
+        var source = allData || tableData || [];
+        var issueRecords = getIssueRecords(source);
+        clearNode(content);
+        content.appendChild(buildQualityGrid(source));
+        content.appendChild(buildProcessPanel(issueRecords.length));
+        var issuePanel = buildIssuePanel(issueRecords);
+        if (issuePanel) content.appendChild(issuePanel);
+        content.appendChild(buildFilterBar(source, data || []));
+
         if (!data || data.length === 0) {
             var empty = document.createElement('div');
             empty.className = 'empty-state';
@@ -557,7 +1195,7 @@
             return;
         }
 
-        var cfg = TABLE_CONFIG[currentTable];
+        var cols = getVisibleColumns();
         var card = document.createElement('div');
         card.className = 'table-card';
         var table = document.createElement('table');
@@ -569,7 +1207,7 @@
         thId.textContent = 'ID';
         thId.style.width = '40px';
         hr.appendChild(thId);
-        cfg.cols.forEach(function(col) {
+        cols.forEach(function(col) {
             var th = document.createElement('th');
             th.textContent = col.l;
             if (col.w) th.style.width = col.w;
@@ -591,15 +1229,18 @@
     }
 
     function buildRow(item) {
-        var cfg = TABLE_CONFIG[currentTable];
+        var cols = getVisibleColumns();
+        var issues = getRecordIssues(item);
         var tr = document.createElement('tr');
+        if (issues.length) tr.className = 'row-warning';
+        if (isInactiveRecord(item)) tr.className += (tr.className ? ' ' : '') + 'row-muted';
 
         var tdId = document.createElement('td');
         tdId.className = 'cell-id';
         tdId.textContent = item.id;
         tr.appendChild(tdId);
 
-        cfg.cols.forEach(function(col) {
+        cols.forEach(function(col) {
             var td = document.createElement('td');
             var val = item[col.k] != null ? String(item[col.k]) : '';
 
@@ -632,6 +1273,24 @@
                 chip.className = 'chip chip-neutral';
                 chip.textContent = val;
                 td.appendChild(chip);
+            } else if (col.chip === 'ativo') {
+                var chipAtivo = document.createElement('span');
+                if (isInactiveRecord(item)) {
+                    chipAtivo.className = 'chip chip-neutral';
+                    chipAtivo.textContent = 'Rascunho';
+                } else {
+                    chipAtivo.className = 'chip chip-success';
+                    chipAtivo.textContent = 'Publicado';
+                }
+                td.appendChild(chipAtivo);
+            } else if (currentTable === 'modulos' && col.k === '_impacto') {
+                var impact = getModuleImpactText(item);
+                if (col.trunc && impact.length > col.trunc) {
+                    td.textContent = impact.substring(0, col.trunc) + '…';
+                    td.title = impact;
+                } else {
+                    td.textContent = impact;
+                }
             } else if (col.trunc && val.length > col.trunc) {
                 td.textContent = val.substring(0, col.trunc) + '…';
                 td.title = val;
@@ -639,7 +1298,16 @@
                 td.textContent = val || '—';
             }
 
-            if (col.p) td.className = 'cell-primary';
+            if (col.p) {
+                td.className = 'cell-primary';
+                if (issues.length) {
+                    td.appendChild(el('span', 'cell-subline', issues[0]));
+                }
+                if (currentTable === 'modulos') {
+                    td.appendChild(el('span', 'cell-subline-note', getModuleSectionText(item)));
+                    td.appendChild(el('span', 'cell-subline-note', getModuleOrderText(item)));
+                }
+            }
             tr.appendChild(td);
         });
 
@@ -660,14 +1328,7 @@
     }
 
     function filterTable(query) {
-        if (!query.trim()) { renderTableData(tableData); return; }
-        var q = query.toLowerCase();
-        var filtered = tableData.filter(function(item) {
-            return Object.values(item).some(function(v) {
-                return v != null && String(v).toLowerCase().indexOf(q) !== -1;
-            });
-        });
-        renderTableData(filtered);
+        renderCurrentTable();
     }
 
     /* ── MODAL ── */
@@ -679,12 +1340,17 @@
         document.getElementById('modal-overlay').classList.remove('hidden');
     }
 
-    function openNew() {
+    function openNew(seed) {
         isNew = true;
         currentId = null;
         document.getElementById('modal-title').textContent = 'Novo — ' + TABLE_CONFIG[currentTable].label;
-        buildForm(null);
+        buildForm(seed || null);
         document.getElementById('modal-overlay').classList.remove('hidden');
+    }
+
+    function openNewDraft() {
+        if (currentTable !== 'modulos') return;
+        openNew({ ativo: false });
     }
 
     /* Paleta de cores da marca */
@@ -803,6 +1469,7 @@
     }
 
     function buildRadioGroup(fieldId, options, currentVal) {
+        currentVal = currentVal === null || currentVal === undefined ? '' : String(currentVal);
         var inp = document.createElement('input');
         inp.type = 'hidden';
         inp.id = fieldId;
@@ -825,7 +1492,11 @@
 
             btn.onclick = function() {
                 inp.value = opt.value;
-                group.querySelectorAll('.radio-btn').forEach(function(b) { b.classList.remove('selected'); });
+                var buttons = group.querySelectorAll('.radio-btn');
+                var i;
+                for (i = 0; i < buttons.length; i++) {
+                    buttons[i].classList.remove('selected');
+                }
                 btn.classList.add('selected');
             };
 
@@ -840,9 +1511,12 @@
 
     function buildForm(item) {
         var body = document.getElementById('modal-body');
-        body.innerHTML = '';
-        SCHEMA[currentTable].forEach(function(f) {
+        clearNode(body);
+        var guide = buildFormGuide();
+        if (guide) body.appendChild(guide);
+        getSchemaForCurrentTable().forEach(function(f) {
             var val = item && item[f.k] != null ? String(item[f.k]) : '';
+            if (!item && f.k === 'ativo') val = 'true';
             var wrap = document.createElement('div');
             wrap.className = 'field-group';
 
@@ -896,6 +1570,12 @@
 
             body.appendChild(wrap);
         });
+
+        if (currentTable === 'modulos') {
+            var preview = el('div', 'module-impact');
+            body.appendChild(preview);
+            bindModuleImpactPreview(preview, item || null);
+        }
     }
 
     function closeModal() {
@@ -904,9 +1584,11 @@
 
     function saveRecord() {
         var updates = {};
-        SCHEMA[currentTable].forEach(function(f) {
+        getSchemaForCurrentTable().forEach(function(f) {
             var el = document.getElementById('f_' + f.k);
-            if (el) updates[f.k] = el.value;
+            if (el) {
+                updates[f.k] = f.k === 'ativo' ? el.value === 'true' : el.value;
+            }
         });
         var btn = document.getElementById('btn-save');
         btn.disabled = true;
@@ -947,7 +1629,7 @@
         document.getElementById('del-table-name').textContent = tableName;
 
         var info = document.getElementById('del-record-info');
-        info.innerHTML = '';
+        clearNode(info);
         var fields = DEL_PREVIEW[currentTable] || [{ k:'id', l:'ID' }];
         fields.forEach(function(f) {
             var val = item[f.k] != null ? String(item[f.k]) : '—';

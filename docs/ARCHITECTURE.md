@@ -96,6 +96,8 @@ Cada arquivo exporta uma ou mais variáveis em `ALL_CAPS_SNAKE_CASE`:
 | 10 — STF/TST | `timeline.js` | Timeline |
 | 11 — Comissões | `cronograma.js` | Flow, Timeline |
 | 12 — FAQ | `faq.js` | FAQAccordion |
+| 13 — Mitos vs Fatos | `mitos.js` | Cards, Pills |
+| 14 — Impactos por setor | `setores.js` | Cards, Callouts |
 
 ---
 
@@ -107,7 +109,7 @@ O sistema é leve por design. Manter assim:
 - Não carregar imagens (usar SVG ou CSS shapes)
 - Não usar CSS transitions longas (máximo 150ms)
 - Não usar `setInterval` ou polling
-- Lazy-render: só construir o DOM de um painel quando ele for ativado pela primeira vez
+- Render controlado: construir apenas painéis que tenham módulo e renderizador correspondentes
 
 ---
 

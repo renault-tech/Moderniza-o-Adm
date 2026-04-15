@@ -1,34 +1,38 @@
 /* supabase-loader.js
-   Busca os dados do Supabase e sobrescreve os arrays globais do frontend.
-   Se offline ou com erro, mantém silenciosamente os dados dos arquivos locais.
-   Chamado por main.js depois da renderização inicial. */
+   Busca os dados do Supabase via REST nativo e sobrescreve os arrays globais do frontend.
+   Se offline ou com erro, mantem silenciosamente os dados dos arquivos locais.
+   Chamado por main.js depois da renderizacao inicial. */
 
 (function () {
   'use strict';
 
-  var SB_URL = 'https://qnsqqgtdgcscqlziikdc.supabase.co';
+  var SB_URL = 'https://qnsqqgtdgcscqlziikdc.supabase.co/rest/v1';
   var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFuc3FxZ3RkZ2NzY3Fsemlpa2RjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MzY5OTEsImV4cCI6MjA5MDAxMjk5MX0.oUNHQDBEAL3kttil86Ny_YJeVVAK9ShZLiVspEh7vAg';
 
-  /* ── Mapeadores de campo ───────────────────────────────────────── */
+  function getLocalModuleDefaults(idx) {
+    if (typeof MODULOS === 'undefined' || !MODULOS[idx]) return null;
+    return MODULOS[idx];
+  }
 
   function mapModulo(row, idx) {
+    var local = getLocalModuleDefaults(idx) || {};
     return {
       id: idx,
-      num: row.num || '',
-      label: row.label || '',
-      color: row.color || '#0071e3',
-      badge: row.badge || null,
-      group: row.group_name || '',          /* group_name → group */
-      titulo: row.titulo || '',
-      subtitulo: row.subtitulo || '',
-      chips: Array.isArray(row.chips) ? row.chips : []
+      num: row.num || local.num || '',
+      label: row.label || local.label || '',
+      color: row.color || local.color || '#0071e3',
+      badge: row.badge || local.badge || null,
+      group: row.group_name || local.group || '',
+      titulo: row.titulo || local.titulo || '',
+      subtitulo: row.subtitulo || local.subtitulo || '',
+      chips: isArray(row.chips) ? row.chips : (isArray(local.chips) ? local.chips : [])
     };
   }
 
   function mapTimeline(row) {
     return {
       status: row.status || 'ok',
-      data: row.data_evento || '',          /* data_evento → data */
+      data: row.data_evento || '',
       titulo: row.titulo || '',
       descricao: row.descricao || '',
       badge: row.badge || null,
@@ -39,11 +43,11 @@
   function mapCronograma(row) {
     return {
       status: row.status || 'ok',
-      data: row.data_fase || '',            /* data_fase → data */
+      data: row.data_fase || '',
       fase: row.fase || '',
       titulo: row.titulo || '',
       descricao: row.descricao || '',
-      entregaveis: Array.isArray(row.entregaveis) ? row.entregaveis : []
+      entregaveis: isArray(row.entregaveis) ? row.entregaveis : []
     };
   }
 
@@ -52,59 +56,130 @@
       nome: row.nome || '',
       cor: row.cor || '#0071e3',
       descricao: row.descricao || '',
-      itens: Array.isArray(row.itens) ? row.itens : [],
+      itens: isArray(row.itens) ? row.itens : [],
       refs: row.refs || ''
     };
   }
 
-  /* ── Sincronização ─────────────────────────────────────────────── */
+  function isArray(value) {
+    return Object.prototype.toString.call(value) === '[object Array]';
+  }
 
-  /* Tabelas a sincronizar: nome, variável global, mapeador, mínimo de linhas */
   var SYNC_TABLES = [
-    { table: 'modulos',    gvar: 'MODULOS',    map: mapModulo,    min: 12 },
-    { table: 'achados',    gvar: 'ACHADOS',    map: null,         min: 10 },
-    { table: 'faq',        gvar: 'FAQ',        map: null,         min: 5  },
-    { table: 'mitos',      gvar: 'MITOS',      map: null,         min: 5  },
-    { table: 'timeline',   gvar: 'TIMELINE',   map: mapTimeline,  min: 5  },
-    { table: 'cronograma', gvar: 'CRONOGRAMA', map: mapCronograma,min: 3  },
-    { table: 'setores',    gvar: 'SETORES',    map: mapSetor,     min: 3  }
+    { table: 'modulos', gvar: 'MODULOS', map: mapModulo, min: 12, order: 'num.asc' },
+    { table: 'achados', gvar: 'ACHADOS', map: null, min: 10, order: 'num.asc' },
+    { table: 'faq', gvar: 'FAQ', map: null, min: 5, order: 'id.asc' },
+    { table: 'mitos', gvar: 'MITOS', map: null, min: 5, order: 'id.asc' },
+    { table: 'timeline', gvar: 'TIMELINE', map: mapTimeline, min: 5, order: 'id.asc' },
+    { table: 'cronograma', gvar: 'CRONOGRAMA', map: mapCronograma, min: 3, order: 'id.asc' },
+    { table: 'setores', gvar: 'SETORES', map: mapSetor, min: 3, order: 'id.asc' }
   ];
 
   function rebuild() {
-    var sb   = document.getElementById('sidebar');
+    var sb = document.getElementById('sidebar');
     var main = document.getElementById('main');
-    if (sb)   sb.innerHTML   = '';
-    if (main) main.innerHTML = '';
+
+    while (sb && sb.firstChild) {
+      sb.removeChild(sb.firstChild);
+    }
+    while (main && main.firstChild) {
+      main.removeChild(main.firstChild);
+    }
 
     if (typeof buildSidebar === 'function') buildSidebar();
-    if (typeof buildPanels  === 'function') buildPanels();
+    if (typeof buildPanels === 'function') buildPanels();
 
-    /* Restaurar navegação por hash */
     var hash = window.location.hash;
     if (hash && hash.indexOf('#modulo-') === 0) {
       var idx = parseInt(hash.replace('#modulo-', ''), 10) - 1;
-      if (!isNaN(idx) && typeof go === 'function') go(idx, true);
+      if (!isNaN(idx) && typeof go === 'function') {
+        go(idx, true);
+        return;
+      }
     }
+
+    if (typeof go === 'function') go(0, true);
+  }
+
+  function buildRequestUrl(cfg, useAtivo) {
+    var url = SB_URL + '/' + cfg.table + '?select=*';
+    if (useAtivo !== false) {
+      url += '&ativo=eq.true';
+    }
+    url += '&order=' + encodeURIComponent(cfg.order || 'id.asc');
+    return url;
+  }
+
+  function requestTable(cfg, done, useAtivo) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', buildRequestUrl(cfg, useAtivo), true);
+    xhr.setRequestHeader('apikey', SB_KEY);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + SB_KEY);
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    xhr.onreadystatechange = function () {
+      var rows;
+      var mapped;
+      var i;
+
+      if (xhr.readyState !== 4) return;
+
+      if (xhr.status < 200 || xhr.status >= 300) {
+        if (useAtivo !== false && xhr.status === 400) {
+          requestTable(cfg, done, false);
+          return;
+        }
+        done(false);
+        return;
+      }
+
+      try {
+        rows = JSON.parse(xhr.responseText);
+      } catch (e) {
+        done(false);
+        return;
+      }
+
+      if (!isArray(rows) || rows.length < cfg.min) {
+        done(false);
+        return;
+      }
+
+      if (cfg.map) {
+        mapped = [];
+        for (i = 0; i < rows.length; i++) {
+          mapped.push(cfg.map(rows[i], i));
+        }
+        window[cfg.gvar] = mapped;
+      } else {
+        window[cfg.gvar] = rows;
+      }
+
+      done(true);
+    };
+
+    xhr.onerror = function () {
+      done(false);
+    };
+
+    xhr.send(null);
   }
 
   window.syncFromSupabase = function () {
-    if (typeof window.supabase === 'undefined') return;
-
-    var db = window.supabase.createClient(SB_URL, SB_KEY);
+    var pending = SYNC_TABLES.length;
     var changed = false;
+    var i;
 
-    var fetches = SYNC_TABLES.map(function (cfg) {
-      return db.from(cfg.table).select('*').order('id').then(function (res) {
-        if (res.error || !res.data || res.data.length < cfg.min) return;
-        window[cfg.gvar] = cfg.map
-          ? res.data.map(function (row, i) { return cfg.map(row, i); })
-          : res.data;
-        changed = true;
-      });
-    });
+    if (!window.XMLHttpRequest || !pending) return;
 
-    Promise.all(fetches).then(function () {
-      if (changed) rebuild();
-    }).catch(function () { /* offline — mantém dados locais */ });
+    function finish(hasChanged) {
+      if (hasChanged) changed = true;
+      pending -= 1;
+      if (pending === 0 && changed) rebuild();
+    }
+
+    for (i = 0; i < SYNC_TABLES.length; i++) {
+      requestTable(SYNC_TABLES[i], finish);
+    }
   };
 }());
