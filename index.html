@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modernização Administrativa — Cataguases/MG</title>
 
+  <script src="src/components/theme.js"></script>
+
   <!-- Design system e estilos -->
   <link rel="stylesheet" href="src/styles/base.css">
   <link rel="stylesheet" href="src/styles/sidebar.css">
@@ -13,14 +15,10 @@
   <link rel="stylesheet" href="src/styles/tables.css">
 </head>
 <body>
-
   <div class="app">
     <nav class="sb" id="sidebar" aria-label="Navegação dos módulos"></nav>
     <main class="main" id="main" aria-label="Conteúdo do módulo"></main>
   </div>
-
-  <!-- SDK Supabase (UMD — expõe window.supabase) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.42.0/dist/umd/supabase.js"></script>
 
   <!-- Dados -->
   <script src="src/data/modulos.js"></script>
@@ -30,11 +28,10 @@
   <script src="src/data/timeline.js"></script>
   <script src="src/data/cronograma.js"></script>
   <script src="src/data/comparativos.js"></script>
+  <script src="src/data/conteudo-modulos.js"></script>
   <script src="src/data/mitos.js"></script>
   <script src="src/data/setores.js"></script>
-  <!-- Loader Supabase: sobrescreve os arrays acima com dados do banco -->
   <script src="src/data/supabase-loader.js"></script>
-
   <!-- Utilitários e componentes -->
   <script src="src/components/utils.js"></script>
   <script src="src/components/charts.js"></script>

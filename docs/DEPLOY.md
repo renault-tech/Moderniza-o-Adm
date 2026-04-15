@@ -2,20 +2,17 @@
 
 ## Opções de publicação
 
-### Opção 1 — Arquivo único (mais simples)
+### Opção 1 — Pasta estática offline-first (mais simples)
 
-O arquivo `index.html` com CSS e JS inline funciona sozinho em qualquer lugar:
+O portal público funciona sem build e sem dependências externas, mas deve ser distribuído com a pasta `src/` junto do `index.html`:
 
 ```bash
-# Abrir localmente no browser
-open index.html
-
-# Ou servir com Python (sem instalação adicional)
+# Servir com Python (sem instalação adicional)
 python3 -m http.server 8080
 # Acessar em: http://localhost:8080
 ```
 
-Para distribuir: enviar o arquivo `index.html` por e-mail ou WhatsApp. O destinatário abre no browser sem precisar de servidor.
+Para distribuir: enviar a pasta do projeto compactada, preservando `index.html` e `src/`.
 
 ### Opção 2 — Servidor estático local (Prefeitura)
 
@@ -71,7 +68,7 @@ Para integrar ao app Cataguases Mais, o painel pode ser exibido como WebView:
 npx html-validate index.html
 
 # 2. Testar todos os módulos manualmente
-# Abrir no browser e clicar em cada um dos 12 itens do sidebar
+# Abrir no browser e clicar em cada um dos 14 itens do sidebar
 # Verificar que o conteúdo aparece corretamente (sem código-fonte visível)
 
 # 3. Testar FAQ

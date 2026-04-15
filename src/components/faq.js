@@ -22,6 +22,8 @@ function buildFaq(container) {
     var wrap = mk('div', 'faq-item');
 
     var q = mk('div', 'faq-q');
+    q.setAttribute('role', 'button');
+    q.setAttribute('tabindex', '0');
     q.setAttribute('aria-expanded', 'false');
     q.onclick = (function(idx) {
       return function() {
@@ -30,6 +32,17 @@ function buildFaq(container) {
         q.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       };
     })(i);
+    q.onkeydown = (function(btn) {
+      return function(e) {
+        e = e || window.event;
+        var key = e.key || '';
+        var code = e.keyCode || e.which;
+        if (key === 'Enter' || key === ' ' || code === 13 || code === 32) {
+          if (e.preventDefault) e.preventDefault();
+          btn.onclick();
+        }
+      };
+    })(q);
 
     q.appendChild(mk('div', 'faq-qt', item.pergunta));
 

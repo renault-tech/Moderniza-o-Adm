@@ -2,14 +2,21 @@
 
 .main {
   flex: 1;
+  overflow-x: hidden;
   overflow-y: auto;
   min-width: 0;
   background: var(--color-background-secondary);
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-secondary) transparent;
 }
 
 .pnl {
   display: none;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
 }
 
 .pnl.on {
@@ -33,6 +40,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+  min-width: 0;
 }
 
 .phead-num {
@@ -65,19 +73,59 @@
   min-width: 0;
 }
 
-.print-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
+.phead-tools {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tool-btn {
+  background: none;
+  border: 0.5px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-text-secondary);
+  min-width: 36px;
+  min-height: 36px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
 }
-.print-btn:hover {
+.tool-btn:hover {
   color: var(--color-text-primary);
+  background: var(--color-background-secondary);
+  border-color: var(--color-border-tertiary);
+}
+.tool-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.tool-btn.is-active {
+  color: var(--color-text-primary);
+  background: var(--color-background-secondary);
+  border-color: var(--color-border-tertiary);
+}
+.zoom-btn {
+  font-size: 16px;
+  line-height: 1;
+}
+.zoom-reset {
+  min-width: 56px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 12px;
+}
+.print-btn svg,
+.tool-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
 }
 .print-btn svg {
   width: 18px;
@@ -120,14 +168,58 @@
 .burger-menu {
   display: none;
   background: none;
-  border: none;
+  border: 0.5px solid transparent;
+  border-radius: 8px;
   cursor: pointer;
-  padding: 4px;
+  padding: 8px;
+  min-width: 40px;
+  min-height: 40px;
 }
 .burger-menu svg {
   width: 24px;
   height: 24px;
   stroke: var(--color-text-primary);
+}
+
+.tbl-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-secondary) transparent;
+}
+
+.main::-webkit-scrollbar,
+.sb-nav-list::-webkit-scrollbar,
+.tbl-wrap::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.main::-webkit-scrollbar-track,
+.sb-nav-list::-webkit-scrollbar-track,
+.tbl-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main::-webkit-scrollbar-thumb,
+.sb-nav-list::-webkit-scrollbar-thumb,
+.tbl-wrap::-webkit-scrollbar-thumb {
+  background: var(--color-border-secondary);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+.main::-webkit-scrollbar-thumb:hover,
+.sb-nav-list::-webkit-scrollbar-thumb:hover,
+.tbl-wrap::-webkit-scrollbar-thumb:hover {
+  background: #7c7c80;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+@media (max-width: 1024px) {
+  .g3, .g4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -141,8 +233,23 @@
     padding: 16px 16px 14px;
   }
 
+  .phead-top {
+    flex-wrap: wrap;
+  }
+
+  .phead-tools {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .phead h2 {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
   .pbody {
     padding: 16px;
+    gap: 16px;
   }
 
   .g2,

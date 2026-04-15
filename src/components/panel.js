@@ -1,10 +1,10 @@
-/* panel.js — renderização dos 12 painéis e navegação */
+/* panel.js — renderização dos painéis e navegação */
 
 /* ============================================================
-   Dados locais específicos de cada painel
-   (não reutilizados em outros contextos)
+   Fallback de dados auxiliares quando conteudo-modulos.js não for carregado
    ============================================================ */
 
+if (typeof MOD1_EH === 'undefined') {
 var MOD1_EH = [
   'Regularização jurídica do funcionalismo',
   'Novo estatuto substituindo a Lei nº 52/1951',
@@ -86,6 +86,7 @@ var MOD6_PCCV_FLOW = [
   { titulo: 'Servidor que migrou da CLT', descricao: 'Enquadrado no nível equivalente ao já conquistado — sem retrocesso', estilo: 'green' },
   { titulo: 'Topo de carreira', descricao: 'Máxima referência salarial do cargo · aposentadoria pelo INSS', estilo: 'gray' }
 ];
+}
 
 /* ============================================================
    Render helper local
@@ -113,9 +114,9 @@ function render0() {
   var kpiGrid = mk('div', 'g4');
   var kpis = [
     { l: 'Servidores ativos', v: '2.573', d: 'Folha 2024 · sistema Betha', cor: null },
-    { l: 'Achados INTEC', v: '17', d: 'Não conformidades legais', cor: '#e8453c' },
-    { l: 'Prejuízo FGTS', v: 'R$ 5,1 mi', d: 'Depósitos irregulares em 2024', cor: '#e8453c' },
-    { l: 'Contratos vencidos', v: '171', d: 'Acima de 2 anos · R$ 11 mi', cor: '#bf8600' }
+    { l: 'Achados INTEC', v: '17', d: 'Não conformidades legais', cor: 'var(--color-text-danger)' },
+    { l: 'Prejuízo FGTS', v: 'R$ 5,1 mi', d: 'Depósitos irregulares em 2024', cor: 'var(--color-text-danger)' },
+    { l: 'Contratos vencidos', v: '171', d: 'Acima de 2 anos · R$ 11 mi', cor: 'var(--color-text-warning)' }
   ];
   kpis.forEach(function (k) {
     var kpi = mk('div', 'kpi');
@@ -699,14 +700,21 @@ var RENDERERS = [
 /**
  * Navega para o módulo de índice idx.
  * Atualiza sidebar e exibe o painel correspondente.
- * @param {number} idx - índice do módulo (0–11)
+ * @param {number} idx - índice do módulo
  */
 function go(idx, skipHash) {
   var sbItems = document.querySelectorAll('.sb-item');
   var panels = document.querySelectorAll('.pnl');
+  var i;
 
-  sbItems.forEach(function (it) { it.classList.remove('on'); });
-  panels.forEach(function (p) { p.classList.remove('on'); });
+  if (idx < 0 || (typeof MODULOS !== 'undefined' && idx >= MODULOS.length)) return;
+
+  for (i = 0; i < sbItems.length; i++) {
+    sbItems[i].classList.remove('on');
+  }
+  for (i = 0; i < panels.length; i++) {
+    panels[i].classList.remove('on');
+  }
 
   if (sbItems[idx]) sbItems[idx].classList.add('on');
 
@@ -721,17 +729,6 @@ function go(idx, skipHash) {
 
   // Update currentIdx globally for keyboard nav
   window.currentIdx = idx;
-
-  // Track progress
-  try {
-    var visited = JSON.parse(localStorage.getItem('modulos_visitados') || '[]');
-    if (visited.indexOf(idx) === -1) {
-      visited.push(idx);
-      localStorage.setItem('modulos_visitados', JSON.stringify(visited));
-    }
-    // Update sidebar visually
-    if (sbItems[idx]) sbItems[idx].classList.add('visited');
-  } catch(e) {}
 
   if (!skipHash) {
     var newHash = 'modulo-' + (idx + 1);
@@ -751,14 +748,34 @@ function go(idx, skipHash) {
 }
 
 /**
- * Pré-renderiza todos os 12 painéis no #main.
+ * Pré-renderiza os painéis disponíveis no #main.
  */
 function buildPanels() {
   var main = document.getElementById('main');
   if (!main) return;
-  RENDERERS.forEach(function (renderFn) {
-    main.appendChild(renderFn());
-  });
+
+  while (main.firstChild) {
+    main.removeChild(main.firstChild);
+  }
+
+  main.appendChild(mk('h1', 'sr-only', 'Modernização Administrativa — Cataguases/MG'));
+
+  var max = RENDERERS.length;
+  if (typeof MODULOS !== 'undefined' && MODULOS.length < max) {
+    max = MODULOS.length;
+  }
+
+  var i;
+  for (i = 0; i < max; i++) {
+    if (typeof RENDERERS[i] === 'function') {
+      main.appendChild(RENDERERS[i]());
+    }
+  }
+
+  if (typeof applyPanelZoom === 'function') {
+    applyPanelZoom(typeof getPanelZoom === 'function' ? getPanelZoom() : 1);
+  }
+
   if (typeof applyGlossary === 'function') {
     applyGlossary(main);
   }

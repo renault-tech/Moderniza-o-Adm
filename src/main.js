@@ -20,6 +20,20 @@ window.addEventListener('load', function () {
   /* Sincronizar com fonte remota somente quando carregada explicitamente. */
   if (typeof syncFromSupabase === 'function') syncFromSupabase();
 
+  if (typeof syncFromSupabase === 'function') {
+    if (document.addEventListener) {
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) syncFromSupabase();
+      });
+    }
+
+    if (window.setInterval) {
+      window.setInterval(function () {
+        syncFromSupabase();
+      }, 60000);
+    }
+  }
+
   /* Navegação por teclado (FEAT-001). */
   window.addEventListener('keydown', function(e) {
     e = e || window.event;
